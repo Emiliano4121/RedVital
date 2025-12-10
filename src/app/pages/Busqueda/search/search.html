@@ -1,0 +1,86 @@
+<div class="home-container">
+  
+  <!-- HEADER MINIMALISTA -->
+  <header class="page-header">
+    <div class="logo">Selecciona tu ubicación</div>
+  </header>
+
+  <!-- SECCIÓN PRINCIPAL DEL MAPA -->
+  <section class="map-section">
+    <div class="map-container">
+      <div class="map-placeholder">
+        Mapa interactivo
+      </div>
+    </div>
+  </section>
+
+  <!-- PANEL DESPLEGABLE DE FILTROS (DRAWER) -->
+  <div class="filter-drawer" [class.open]="isPanelOpen">
+    
+    <!-- BARRA SUPERIOR PARA ARRASTRAR/CLIC -->
+    <div class="filter-handle" (click)="togglePanel()">
+      <div class="handle-indicator"></div>
+      <div class="filter-title">Filtros de búsqueda</div>
+    </div>
+
+    <!-- CONTENIDO DEL PANEL -->
+    <div class="filter-content">
+      
+      <!-- EJEMPLOS DE FILTROS FUTUROS -->
+      <div class="filter-section">
+        <label class="filter-label">Tipo de servicio</label>
+        <input type="text" class="filter-input" placeholder="Enfermería, Cuidados intensivos...">
+      </div>
+
+<div class="filter-section">
+  <label class="filter-label">Rango de distancia</label>
+  <input type="range" 
+         class="filter-range" 
+         min="1" 
+         max="50" 
+         [value]="selectedDistance"
+         (input)="onDistanceChange($event)">
+  <div class="distance-value">
+    <span>{{selectedDistance}}</span> km
+  </div>
+</div>
+
+      <div class="filter-section">
+        <label class="filter-label">Calificación mínima</label>
+        
+        <div class="star-rating">
+  <div class="stars-container">
+    @for (star of [1,2,3,4,5]; track star) {
+      <span class="star" 
+            [class.active]="star <= selectedRating"
+            [class.inactive]="selectedRating > 0 && star > selectedRating"
+            (click)="selectRating(star)">
+        ★
+      </span>
+    }
+  </div>
+  <div class="rating-text">
+    <span>{{ratingText}}</span>
+  </div>
+</div>
+
+      </div>
+
+      <div class="filter-section">
+        <label class="filter-label">Rango de precios</label>
+        <div class="price-inputs">
+          <input type="text" class="filter-input" placeholder="Mínimo">
+          <input type="text" class="filter-input" placeholder="Máximo">
+        </div>
+      </div>
+
+      <!-- BOTONES DE ACCIÓN -->
+      <div class="filter-actions">
+        <button class="clear-btn" id="clearFilters">Limpiar</button>
+        <button class="apply-btn">Aplicar filtros</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>
