@@ -1,0 +1,87 @@
+<!-- Backdrop (fondo oscuro) -->
+<div class="modal-backdrop" *ngIf="isOpen" (click)="close()"></div>
+
+<!-- Modal Container -->
+<div class="modal-container" *ngIf="isOpen" [@modalAnimation]>
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    
+    <!-- Header del Modal -->
+    <div class="modal-header">
+      <h2 class="modal-title">Iniciar Sesión</h2>
+      <button class="btn-close" (click)="close()" aria-label="Cerrar">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+    
+    <!-- Body del Modal -->
+    <div class="modal-body">
+      <form (ngSubmit)="login()">
+        
+        <!-- Campo de Email -->
+        <div class="form-group">
+          <label for="email" class="form-label">Correo electrónico</label>
+          <input 
+            type="email" 
+            id="email" 
+            class="form-input" 
+            placeholder="ejemplo@correo.com"
+            [(ngModel)]="email"
+            name="email"
+            required>
+        </div>
+        
+        <!-- Campo de Contraseña -->
+        <div class="form-group">
+          <label for="password" class="form-label">Contraseña</label>
+          <input 
+            type="password" 
+            id="password" 
+            class="form-input" 
+            placeholder="••••••••"
+            [(ngModel)]="password"
+            name="password"
+            required>
+        </div>
+        
+        <!-- Recordarme / Olvidé contraseña -->
+        <div class="form-options">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="remember" name="remember">
+            <span>Recordarme</span>
+          </label>
+          <a href="#" class="link-text">¿Olvidaste tu contraseña?</a>
+        </div>
+        
+        <!-- Botón de Iniciar Sesión -->
+        <button type="submit" class="btn-primary">
+          Iniciar Sesión
+        </button>
+        
+        <!-- Divisor -->
+        <div class="divider">
+          <span>o continuar con</span>
+        </div>
+        
+        <!-- Botones de Redes Sociales -->
+        <div class="social-buttons">
+          <button type="button" class="btn-social" (click)="loginWithGoogle()">
+            <i class="bi bi-google"></i>
+            <span>Google</span>
+          </button>
+          <button type="button" class="btn-social" (click)="loginWithFacebook()">
+            <i class="bi bi-facebook"></i>
+            <span>Facebook</span>
+          </button>
+        </div>
+        
+        <!-- Registro -->
+        <div class="register-link">
+          <span>¿No tienes cuenta? </span>
+          <a href="#" class="link-bold">Regístrate</a>
+        </div>
+        
+      </form>
+    </div>
+    
+  </div>
+</div>

@@ -6,6 +6,9 @@
   <ul class="nav-links">
     <li><a href="#">¿Quiénes somos?</a></li>
     <li><a href="#">Inicio</a></li>
-    <li><a href="#">Iniciar sesion</a></li>
+    <li><a href="#" (click)="openLoginModal(); $event.preventDefault()">Iniciar sesión</a></li>
   </ul>
 </nav>
+
+<!-- Incluye el componente del modal -->
+<app-login></app-login>
