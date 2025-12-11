@@ -1,125 +1,129 @@
-/* --- Variables basadas en tu diseño --- */
-$rv-blue: #345e8a; // Azul oscuro del footer y textos
-$rv-primary: #007bff; // Azul primario para botones y acentos
-$rv-light: #f8f9fa; // Fondo claro
+/* --- Variables --- */
+$rv-primary: #007bff;
+$rv-light: #f8f9fa;
 
-// === 1. HERO SECTION ===
+/* === HERO SECTION FULL SCREEN === */
 .hero-section {
-    padding: 80px 0;
-    min-height: 80vh;
-    display: flex;
-    align-items: center;
+    position: relative;
+    width: 100%;
+    min-height: 85vh; /* Ocupa casi toda la altura de la pantalla */
+    
+    /* 1. LA IMAGEN DE FONDO */
+    /* Asegúrate de que la ruta sea correcta */
+    background-image: url('../../../../assets/images/enfermera-cuidando.jpg');
+    background-size: cover;     /* Escala la imagen para cubrir todo sin deformarse */
+    background-position: center top; /* Centra la imagen */
+    background-repeat: no-repeat;
 
-    h1 {
-        font-size: 3.8rem;
-        font-weight: 800;
-        color: #2c3e50;
-        line-height: 1.1;
+    /* 2. EL EFECTO AZULITO/DIFUMINADO (Overlay) */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /* Este degradado es la clave:
+           - Empieza con un azul oscuro/gris a la izquierda (donde está el texto) para que sea legible.
+           - Se va volviendo transparente hacia la derecha para dejar ver bien a los enfermeros.
+        */
+        background: linear-gradient(to right, rgba(26, 46, 66, 0.85) 0%, rgba(38, 79, 117, 0.6) 50%, rgba(52, 152, 219, 0.1) 100%);
+        z-index: 1;
     }
 
-    .hero-image-container img {
-        max-height: 500px;
-        object-fit: cover;
+    /* ESTILOS PARA LOS BOTONES BLANCOS */
+    .btn-primary,
+    .btn-outline-light {
+        background-color: white;
+        color: $rv-primary; // Texto azul
+        border: 2px solid white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        
+        &:hover {
+            background-color: transparent;
+            color: white;
+            border-color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
     }
 }
 
-// === 2. STEPS SECTION (¿CÓMO FUNCIONA?) ===
+/* Ajustes del contenido para que esté encima del degradado */
+.hero-content {
+    z-index: 2; /* Importante: pone el texto encima del filtro oscuro */
+    
+    /* TÍTULO RED VITAL MÁS GRANDE */
+    p.text-uppercase {
+        font-size: 4rem; /* Más grande */
+        letter-spacing: 2px; /* Espaciado entre letras */
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        
+        i.bi-heart-fill {
+            font-size: 4rem; /* Corazón proporcional */
+        }
+    }
+    
+    h1 {
+        /* Sombra suave al texto para máxima legibilidad */
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+}
+
+/* Resto de estilos (Pasos, Especialidades) se quedan igual... */
 .steps-section {
     background-color: $rv-light;
     
-    h2 {
-        color: $rv-blue;
-        font-weight: 700;
-        margin-bottom: 20px;
-    }
-
-    .step-item {
-        position: relative;
-        padding-top: 20px;
-        
-        .icon-circle {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background-color: $rv-primary; 
-            color: white;
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        // Simulación de la línea conectora entre pasos (más complejo en CSS puro sin SVG)
-        &:not(:last-child)::after {
-            content: "";
-            position: absolute;
-            right: -50%;
-            top: 55px;
-            width: 100%;
-            height: 2px;
-            background-color: #ccc;
-            z-index: 0;
-        }
-        &:nth-child(4)::after, &:nth-child(8)::after { /* Deshabilitar la línea para el último elemento de la fila */
-             display: none;
-        }
+    .icon-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        background-color: $rv-primary; 
+        color: white;
+        font-size: 1.8rem;
+        margin-bottom: 15px;
     }
 }
 
-// === 3. SPECIALTIES SECTION ===
 .specialties-section {
-    h2 {
-        color: $rv-blue;
-        font-weight: 700;
-        margin-bottom: 5px;
-    }
-
     .icon-specialty {
         font-size: 2.2rem;
         color: $rv-primary;
         margin-bottom: 10px;
     }
-
-    // Tarjeta flotante "Por Qué Elegir Red Vital"
+    
     .why-choose-card {
-        background-color: white;
-        margin-top: -80px; /* Desplazamiento hacia arriba para superponerse */
+        margin-top: -60px;
         position: relative;
-        z-index: 10;
-        
-        h3 {
-            color: $rv-blue;
-            font-weight: 600;
-        }
-        
-        // Estilos para los íconos de la lista de razones
-        i {
-            color: $rv-primary;
-        }
     }
 }
 
-// === MEDIA QUERIES (Responsiveness) ===
+/* Móvil */
 @media (max-width: 992px) {
     .hero-section {
-        .hero-content {
-            margin-bottom: 40px;
-        }
-        h1 {
-            font-size: 3rem;
-        }
-    }
-
-    .steps-section .step-item {
-        margin-bottom: 30px;
-        &:not(:last-child)::after {
-            display: none; /* Ocultar líneas con layout vertical */
+        min-height: 60vh; /* Un poco más bajo en celular */
+        text-align: center;
+        
+        /* En móvil oscurecemos toda la imagen para que el texto se lea bien */
+        &::before {
+            background: rgba(26, 46, 66, 0.75); 
         }
     }
-
-    .why-choose-card {
-        margin-top: 30px; /* Ajustar posición en móvil */
+    
+    .hero-content {
+        margin: 0 auto; /* Centrar contenido */
+        
+        /* Red Vital un poco más pequeño en móvil */
+        p.text-uppercase {
+            font-size: 1.2rem;
+        }
+    }
+    
+    .specialties-section .why-choose-card {
+        margin-top: 30px;
     }
 }
