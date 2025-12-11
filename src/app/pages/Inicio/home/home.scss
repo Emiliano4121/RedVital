@@ -1,0 +1,125 @@
+/* --- Variables basadas en tu diseño --- */
+$rv-blue: #345e8a; // Azul oscuro del footer y textos
+$rv-primary: #007bff; // Azul primario para botones y acentos
+$rv-light: #f8f9fa; // Fondo claro
+
+// === 1. HERO SECTION ===
+.hero-section {
+    padding: 80px 0;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+
+    h1 {
+        font-size: 3.8rem;
+        font-weight: 800;
+        color: #2c3e50;
+        line-height: 1.1;
+    }
+
+    .hero-image-container img {
+        max-height: 500px;
+        object-fit: cover;
+    }
+}
+
+// === 2. STEPS SECTION (¿CÓMO FUNCIONA?) ===
+.steps-section {
+    background-color: $rv-light;
+    
+    h2 {
+        color: $rv-blue;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .step-item {
+        position: relative;
+        padding-top: 20px;
+        
+        .icon-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background-color: $rv-primary; 
+            color: white;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        // Simulación de la línea conectora entre pasos (más complejo en CSS puro sin SVG)
+        &:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            right: -50%;
+            top: 55px;
+            width: 100%;
+            height: 2px;
+            background-color: #ccc;
+            z-index: 0;
+        }
+        &:nth-child(4)::after, &:nth-child(8)::after { /* Deshabilitar la línea para el último elemento de la fila */
+             display: none;
+        }
+    }
+}
+
+// === 3. SPECIALTIES SECTION ===
+.specialties-section {
+    h2 {
+        color: $rv-blue;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+
+    .icon-specialty {
+        font-size: 2.2rem;
+        color: $rv-primary;
+        margin-bottom: 10px;
+    }
+
+    // Tarjeta flotante "Por Qué Elegir Red Vital"
+    .why-choose-card {
+        background-color: white;
+        margin-top: -80px; /* Desplazamiento hacia arriba para superponerse */
+        position: relative;
+        z-index: 10;
+        
+        h3 {
+            color: $rv-blue;
+            font-weight: 600;
+        }
+        
+        // Estilos para los íconos de la lista de razones
+        i {
+            color: $rv-primary;
+        }
+    }
+}
+
+// === MEDIA QUERIES (Responsiveness) ===
+@media (max-width: 992px) {
+    .hero-section {
+        .hero-content {
+            margin-bottom: 40px;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+    }
+
+    .steps-section .step-item {
+        margin-bottom: 30px;
+        &:not(:last-child)::after {
+            display: none; /* Ocultar líneas con layout vertical */
+        }
+    }
+
+    .why-choose-card {
+        margin-top: 30px; /* Ajustar posición en móvil */
+    }
+}
