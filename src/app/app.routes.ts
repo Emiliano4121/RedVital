@@ -12,3 +12,6 @@ export const routes: Routes = [
   // { path: 'dashboard/paciente', component: PacienteDashboard, canActivate: [authGuard('paciente')] },
   { path: '**', redirectTo: '' }
 ];
+import { provideRouter, withHashLocation } from '@angular/router';
+
+provideRouter(routes, withHashLocation());
