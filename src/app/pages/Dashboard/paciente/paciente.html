@@ -1,10 +1,11 @@
 <div class="dash-wrapper">
 
-  <!-- OVERLAY MÓVIL -->
+  <!-- OVERLAY -->
   <div class="overlay" [class.show]="sidebarOpen()" (click)="toggleSidebar()"></div>
 
   <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar" [class.open]="sidebarOpen()">
+    
     <div class="sb-brand">
       <i class="bi bi-heart-pulse-fill brand-icon"></i>
       <span>RedVital</span>
@@ -19,41 +20,45 @@
     </div>
 
     <nav class="sb-nav">
-      <button class="sb-item" [class.active]="activeSection()==='inicio'"         (click)="setSection('inicio')">
+      <button class="sb-item" [class.active]="activeSection()==='inicio'" (click)="setSection('inicio')">
         <i class="bi bi-house-door-fill"></i> Inicio
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='enfermeros'"     (click)="setSection('enfermeros')">
+
+      <button class="sb-item" [class.active]="activeSection()==='enfermeros'" (click)="setSection('enfermeros')">
         <i class="bi bi-people-fill"></i> Enfermeros
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='citas'"          (click)="setSection('citas')">
+
+      <button class="sb-item" [class.active]="activeSection()==='citas'" (click)="setSection('citas')">
         <i class="bi bi-calendar-check-fill"></i> Mis citas
-        @if (activeAppointments().length) {
-          <span class="badge">{{ activeAppointments().length }}</span>
-        }
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='historial'"      (click)="setSection('historial')">
+
+      <button class="sb-item" [class.active]="activeSection()==='historial'" (click)="setSection('historial')">
         <i class="bi bi-clock-history"></i> Historial
       </button>
+
       <button class="sb-item" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
         <i class="bi bi-bell-fill"></i> Notificaciones
         @if (unreadCount()) {
           <span class="badge">{{ unreadCount() }}</span>
         }
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='perfil'"         (click)="setSection('perfil')">
+
+      <button class="sb-item" [class.active]="activeSection()==='perfil'" (click)="setSection('perfil')">
         <i class="bi bi-person-fill"></i> Mi perfil
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='configuracion'"  (click)="setSection('configuracion')">
+
+      <button class="sb-item" [class.active]="activeSection()==='configuracion'" (click)="setSection('configuracion')">
         <i class="bi bi-gear-fill"></i> Configuración
       </button>
     </nav>
 
     <div class="sb-footer">
       <button class="demo-btn" (click)="switchToEnfermero()">
-        <i class="bi bi-arrow-left-right"></i> Vista Enfermero (demo)
+        Vista Enfermero
       </button>
+
       <button class="logout-btn" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+        Cerrar sesión
       </button>
     </div>
   </aside>
@@ -63,184 +68,118 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-      <button class="hamburger" (click)="toggleSidebar()"><i class="bi bi-list"></i></button>
+      <button class="hamburger" (click)="toggleSidebar()">☰</button>
+
       <h1 class="tb-title">
         @switch(activeSection()) {
-          @case('inicio')         { Inicio }
-          @case('enfermeros')     { Buscar Enfermeros }
-          @case('citas')          { Mis Citas }
-          @case('historial')      { Historial }
+          @case('inicio') { Inicio }
+          @case('enfermeros') { Enfermeros }
+          @case('citas') { Mis Citas }
+          @case('historial') { Historial }
           @case('notificaciones') { Notificaciones }
-          @case('perfil')         { Mi Perfil }
-          @case('configuracion')  { Configuración }
+          @case('perfil') { Perfil }
+          @case('configuracion') { Configuración }
         }
       </h1>
+
       <div class="tb-right">
-        <button class="tb-icon" (click)="setSection('notificaciones')">
-          <i class="bi bi-bell-fill"></i>
-          @if (unreadCount()) { <span class="dot">{{ unreadCount() }}</span> }
-        </button>
         <div class="avatar-sm">{{ auth.user()?.avatar }}</div>
       </div>
     </header>
 
-    <!-- CONTENIDO -->
+    <!-- ===== BODY ===== -->
     <main class="body">
 
-      <!-- ====== INICIO ====== -->
+      <!-- ===== INICIO ===== -->
       @if (activeSection() === 'inicio') {
+
         <div class="banner paciente-banner">
           <div>
             <h2>¡Hola, {{ firstName }}! 👋</h2>
             <p>¿Qué tipo de atención necesitas hoy?</p>
           </div>
-          <button class="btn-accent" (click)="setSection('enfermeros')">
-            <i class="bi bi-search"></i> Buscar enfermero
-          </button>
-        </div>
 
-        <div class="stats-row">
-          <div class="stat-box">
-            <i class="bi bi-calendar-check-fill" style="color:#3b82f6"></i>
-            <div><p class="sv">{{ activeAppointments().length }}</p><p class="sl">Citas activas</p></div>
-          </div>
-          <div class="stat-box">
-            <i class="bi bi-check-circle-fill" style="color:#22c55e"></i>
-            <div><p class="sv">{{ historyAppointments().length }}</p><p class="sl">Completadas</p></div>
-          </div>
-          <div class="stat-box">
-            <i class="bi bi-people-fill" style="color:#f59e0b"></i>
-            <div><p class="sv">{{ nurses.length }}</p><p class="sl">Disponibles</p></div>
-          </div>
+          <button class="btn-accent" (click)="setSection('enfermeros')">
+            Buscar enfermero
+          </button>
         </div>
 
         <div class="section-head">
           <h3>Enfermeros cerca de ti</h3>
-          <button class="link-btn" (click)="setSection('enfermeros')">Ver todos →</button>
         </div>
+
+        <!-- 👇 NUEVAS CARDS -->
         <div class="nurses-grid">
-          @for (n of nurses.slice(0,4); track n.id) {
-            <ng-container *ngTemplateOutlet="nurseCard; context:{n}"></ng-container>
+          @for (n of nurses; track n.id) {
+            <app-profile-card [nurse]="n"></app-profile-card>
           }
         </div>
       }
 
-      <!-- ====== ENFERMEROS ====== -->
+      <!-- ===== ENFERMEROS ===== -->
       @if (activeSection() === 'enfermeros') {
+
+        <div class="section-head">
+          <h3>Todos los enfermeros</h3>
+        </div>
+
         <div class="nurses-grid full">
           @for (n of nurses; track n.id) {
-            <ng-container *ngTemplateOutlet="nurseCard; context:{n}"></ng-container>
+            <app-profile-card [nurse]="n"></app-profile-card>
           }
         </div>
       }
 
-      <!-- ====== CITAS ====== -->
+      <!-- ===== CITAS ===== -->
       @if (activeSection() === 'citas') {
         @if (!activeAppointments().length) {
-          <div class="empty"><i class="bi bi-calendar-x"></i><p>No tienes citas activas.</p></div>
+          <div class="empty">
+            <i class="bi bi-calendar-x"></i>
+            <p>No tienes citas activas.</p>
+          </div>
         } @else {
           @for (a of activeAppointments(); track a.id) {
-            <ng-container *ngTemplateOutlet="aptRow; context:{a}"></ng-container>
-          }
-        }
-      }
-
-      <!-- ====== HISTORIAL ====== -->
-      @if (activeSection() === 'historial') {
-        @if (!historyAppointments().length) {
-          <div class="empty"><i class="bi bi-clock-history"></i><p>Tu historial está vacío.</p></div>
-        } @else {
-          @for (a of historyAppointments(); track a.id) {
-            <ng-container *ngTemplateOutlet="aptRow; context:{a}"></ng-container>
-          }
-        }
-      }
-
-      <!-- ====== NOTIFICACIONES ====== -->
-      @if (activeSection() === 'notificaciones') {
-        <div class="section-head">
-          <h3>{{ unreadCount() }} sin leer</h3>
-          @if (unreadCount()) { <button class="link-btn" (click)="markAllRead()">Marcar todas leídas</button> }
-        </div>
-        @for (n of notifications; track n.id) {
-          <div class="notif" [class.unread]="!n.read" (click)="n.read=true">
-            <i class="bi notif-ico"
-               [class.bi-check-circle-fill]="n.type==='success'"
-               [class.bi-info-circle-fill]="n.type==='info'"
-               [class.bi-exclamation-triangle-fill]="n.type==='warning'"
-               [class.green]="n.type==='success'"
-               [class.blue]="n.type==='info'"
-               [class.yellow]="n.type==='warning'"></i>
-            <div class="notif-body">
-              <p class="notif-msg">{{ n.message }}</p>
-              <span class="notif-time">{{ n.time }}</span>
+            <div class="apt-row">
+              <div class="apt-left">
+                <p class="apt-nurse">{{ a.nurseName }}</p>
+                <p class="apt-svc">{{ a.service }}</p>
+                <p class="apt-addr">{{ a.address }}</p>
+              </div>
+              <div class="apt-right">
+                <p class="apt-date">{{ a.date }}</p>
+                <p class="apt-time">{{ a.time }}</p>
+                <span class="st-chip">{{ a.status }}</span>
+              </div>
             </div>
-            @if (!n.read) { <span class="unread-dot"></span> }
+          }
+        }
+      }
+
+      <!-- ===== NOTIFICACIONES ===== -->
+      @if (activeSection() === 'notificaciones') {
+        @for (n of notifications; track n.id) {
+          <div class="notif" [class.unread]="!n.read">
+            <p>{{ n.message }}</p>
+            <small>{{ n.time }}</small>
           </div>
         }
       }
 
-      <!-- ====== PERFIL ====== -->
+      <!-- ===== PERFIL ===== -->
       @if (activeSection() === 'perfil') {
         <div class="profile-card">
           <div class="profile-avatar">{{ auth.user()?.avatar }}</div>
           <h3>{{ auth.user()?.name }}</h3>
-          <span class="role-chip paciente-chip">Paciente</span>
+
           <div class="fields">
             <div class="field">
-              <label>Correo electrónico</label>
-              <input type="email" [value]="auth.user()?.email ?? ''" class="inp">
-            </div>
-            <div class="field">
               <label>Teléfono</label>
-              <input type="tel" [value]="profile.phone" class="inp">
+              <input [value]="profile.phone" class="inp">
             </div>
+
             <div class="field">
               <label>Dirección</label>
-              <input type="text" [value]="profile.address" class="inp">
-            </div>
-          </div>
-          <button class="btn-accent mt">Guardar cambios</button>
-        </div>
-      }
-
-      <!-- ====== CONFIGURACIÓN ====== -->
-      @if (activeSection() === 'configuracion') {
-        <div class="settings">
-
-          <div class="sg">
-            <h4 class="sg-title">Cuenta</h4>
-            <div class="si">
-              <div><p class="sl2">Cambiar contraseña</p><p class="ss">Actualiza periódicamente</p></div>
-              <button class="btn-outline">Cambiar</button>
-            </div>
-            <div class="si">
-              <div><p class="sl2">Verificación en dos pasos</p><p class="ss">Seguridad extra</p></div>
-              <label class="toggle"><input type="checkbox"><span class="track"></span></label>
-            </div>
-          </div>
-
-          <div class="sg">
-            <h4 class="sg-title">Notificaciones</h4>
-            <div class="si">
-              <div><p class="sl2">Notificaciones por email</p><p class="ss">Actualizaciones en tu correo</p></div>
-              <label class="toggle"><input type="checkbox" checked><span class="track"></span></label>
-            </div>
-            <div class="si">
-              <div><p class="sl2">Notificaciones push</p><p class="ss">Alertas en tiempo real</p></div>
-              <label class="toggle"><input type="checkbox" checked><span class="track"></span></label>
-            </div>
-          </div>
-
-          <div class="sg danger">
-            <h4 class="sg-title red">Zona de peligro</h4>
-            <div class="si">
-              <div><p class="sl2">Cerrar sesión</p><p class="ss">Salir de tu cuenta</p></div>
-              <button class="btn-danger" (click)="logout()">Salir</button>
-            </div>
-            <div class="si">
-              <div><p class="sl2">Eliminar cuenta</p><p class="ss">Acción permanente e irreversible</p></div>
-              <button class="btn-danger">Eliminar</button>
+              <input [value]="profile.address" class="inp">
             </div>
           </div>
         </div>
@@ -249,47 +188,3 @@
     </main>
   </div>
 </div>
-
-<!-- ===== TEMPLATE: NURSE CARD ===== -->
-<ng-template #nurseCard let-n="n">
-  <div class="nurse-card" [class.off]="!n.available">
-    <div class="nc-top">
-      <div class="nc-avatar">{{ n.avatar }}</div>
-      <span class="avail-dot" [class.on]="n.available"></span>
-    </div>
-    <p class="nc-name">{{ n.name }}</p>
-    <p class="nc-spec">{{ n.specialty }}</p>
-    <div class="stars">
-      @for (s of getStars(n.rating); track s) {
-        <i class="bi" [class.bi-star-fill]="s<=n.rating" [class.bi-star]="s>n.rating"></i>
-      }
-      <span class="rc">({{ n.reviews }})</span>
-    </div>
-    <div class="nc-meta">
-      <span><i class="bi bi-geo-alt-fill"></i>{{ n.distance }}</span>
-      <span><i class="bi bi-briefcase-fill"></i>{{ n.experience }} años</span>
-    </div>
-    <div class="nc-footer">
-      <span class="price">${{ n.price }}/hr</span>
-      <button class="btn-book" [disabled]="!n.available">
-        {{ n.available ? 'Agendar' : 'No disponible' }}
-      </button>
-    </div>
-  </div>
-</ng-template>
-
-<!-- ===== TEMPLATE: APPOINTMENT ROW ===== -->
-<ng-template #aptRow let-a="a">
-  <div class="apt-row">
-    <div class="apt-left">
-      <p class="apt-nurse"><i class="bi bi-person-fill"></i> {{ a.nurseName }}</p>
-      <p class="apt-svc">{{ a.service }}</p>
-      <p class="apt-addr"><i class="bi bi-geo-alt"></i> {{ a.address }}</p>
-    </div>
-    <div class="apt-right">
-      <p class="apt-date">{{ a.date }}</p>
-      <p class="apt-time">{{ a.time }}</p>
-      <span class="st-chip" [class]="statusClass(a.status)">{{ statusLabel(a.status) }}</span>
-    </div>
-  </div>
-</ng-template>

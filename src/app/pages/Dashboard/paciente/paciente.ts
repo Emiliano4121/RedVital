@@ -4,45 +4,21 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 
-export interface Nurse {
-  id: number;
-  name: string;
-  specialty: string;
-  rating: number;
-  reviews: number;
-  distance: string;
-  price: number;
-  available: boolean;
-  avatar: string;
-  experience: number;
-}
-
-export interface Appointment {
-  id: number;
-  nurseName: string;
-  service: string;
-  date: string;
-  time: string;
-  status: 'activa' | 'pendiente' | 'completada' | 'cancelada';
-  address: string;
-}
-
-export interface Notification {
-  id: number;
-  message: string;
-  time: string;
-  read: boolean;
-  type: 'info' | 'success' | 'warning';
-}
+// 👇 IMPORTS NUEVOS
+import { Nurse } from '../../../interfaces/nurse.interface';
+import { Appointment } from '../../../interfaces/appointment.interface';
+import { Notification } from '../../../interfaces/notification.interface';
+import { ProfileCard } from '../../../components/profile-card/profile-card';
 
 @Component({
   selector: 'app-paciente-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ProfileCard],
   templateUrl: './paciente.html',
   styleUrls: ['./paciente.scss']
 })
 export class PacienteDashboard {
+
   auth = inject(AuthService);
   router = inject(Router);
 
@@ -55,45 +31,94 @@ export class PacienteDashboard {
     address: 'Calle Principal 123, Oaxaca',
   };
 
-  // Enfermeros disponibles
+  // 👇 ENFERMEROS (YA CON IMÁGENES)
   nurses: Nurse[] = [
-    { id: 1, name: 'Ana López',       specialty: 'Cuidados Críticos',    rating: 5, reviews: 62, distance: '1.2 km', price: 400, available: true,  avatar: 'AL', experience: 8  },
-    { id: 2, name: 'Jorge Hernández', specialty: 'Geriatría',             rating: 4, reviews: 38, distance: '2.5 km', price: 320, available: true,  avatar: 'JH', experience: 6  },
-    { id: 3, name: 'Sofía Martínez',  specialty: 'Pediatría',             rating: 5, reviews: 91, distance: '3.1 km', price: 380, available: false, avatar: 'SM', experience: 10 },
-    { id: 4, name: 'Luis Torres',     specialty: 'Rehabilitación',        rating: 4, reviews: 24, distance: '4.0 km', price: 300, available: true,  avatar: 'LT', experience: 4  },
-    { id: 5, name: 'Claudia Vega',    specialty: 'Enfermería General',    rating: 5, reviews: 55, distance: '1.8 km', price: 350, available: true,  avatar: 'CV', experience: 7  },
-    { id: 6, name: 'Roberto Díaz',    specialty: 'Curaciones',            rating: 3, reviews: 17, distance: '5.2 km', price: 280, available: true,  avatar: 'RD', experience: 3  },
+    {
+      id: 1,
+      name: 'Ana López',
+      specialty: 'Cuidados Críticos',
+      rating: 5,
+      reviews: 62,
+      distance: '1.2 km',
+      price: 400,
+      available: true,
+      experience: 8,
+      profileImage: 'https://citbm.unmsm.edu.pe/wp-content/uploads/2021/04/ENFERMERA-IV-edited.png',
+      coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSp5E9ziuzNP2StY5WNstT-7FMzmfBvMFtJQ&s'
+    },
+    {
+      id: 2,
+      name: 'Jorge Hernández',
+      specialty: 'Geriatría',
+      rating: 4,
+      reviews: 38,
+      distance: '2.5 km',
+      price: 320,
+      available: true,
+      experience: 6,
+      profileImage: 'https://st2.depositphotos.com/1158045/9691/i/450/depositphotos_96919526-stock-photo-friendly-doctor-smiling.jpg',
+      coverImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0UGStcS_mIKX8VdHzKUgP2G_nLp25bhw5_w&s'
+    },
+    {
+      id: 3,
+      name: 'Sofía Martínez',
+      specialty: 'Pediatría',
+      rating: 5,
+      reviews: 91,
+      distance: '3.1 km',
+      price: 380,
+      available: false,
+      experience: 10,
+      profileImage: 'https://img.freepik.com/foto-gratis/hermosa-doctora-uniforme-hospital_23-2148733958.jpg?semt=ais_hybrid&w=740&q=80',
+      coverImage: 'https://img.freepik.com/foto-gratis/vista-interior-fondo-abstracto-borroso-mirando-vestibulo-vacio-oficina-puertas-entrada-pared-cortina-vidrio-marco_1339-6363.jpg?semt=ais_hybrid&w=740&q=80'
+    }
   ];
 
   appointments: Appointment[] = [
-    { id: 1, nurseName: 'Ana López',      service: 'Cuidados post-operatorios', date: '2025-12-15', time: '10:00 AM', status: 'activa',     address: 'Calle Principal 123' },
-    { id: 2, nurseName: 'Jorge Hernández',service: 'Atención adulto mayor',     date: '2025-12-18', time: '3:00 PM',  status: 'pendiente',  address: 'Calle Principal 123' },
-    { id: 3, nurseName: 'Sofía Martínez', service: 'Pediatría general',         date: '2025-11-30', time: '9:00 AM',  status: 'completada', address: 'Calle Principal 123' },
-    { id: 4, nurseName: 'Luis Torres',    service: 'Rehabilitación física',     date: '2025-11-20', time: '11:00 AM', status: 'cancelada',  address: 'Calle Principal 123' },
+    {
+      id: 1,
+      nurseName: 'Ana López',
+      service: 'Cuidados post-operatorios',
+      date: '2025-12-15',
+      time: '10:00 AM',
+      status: 'activa',
+      address: 'Calle Principal 123'
+    }
   ];
 
   notifications: Notification[] = [
-    { id: 1, message: 'Tu cita del 15 de diciembre fue confirmada',    time: 'Hace 2 horas', read: false, type: 'success' },
-    { id: 2, message: 'Ana López aceptó tu solicitud de servicio',     time: 'Hace 5 horas', read: false, type: 'info'    },
-    { id: 3, message: 'Recuerda tu cita mañana a las 3:00 PM',        time: 'Hace 1 día',   read: true,  type: 'warning' },
-    { id: 4, message: 'Nuevo enfermero disponible en tu zona',         time: 'Hace 2 días',  read: true,  type: 'info'    },
+    {
+      id: 1,
+      message: 'Tu cita fue confirmada',
+      time: 'Hace 2 horas',
+      read: false,
+      type: 'success'
+    }
   ];
 
-  activeAppointments  = computed(() => this.appointments.filter(a => a.status === 'activa' || a.status === 'pendiente'));
-  historyAppointments = computed(() => this.appointments.filter(a => a.status === 'completada' || a.status === 'cancelada'));
-  unreadCount         = computed(() => this.notifications.filter(n => !n.read).length);
+  activeAppointments  = computed(() =>
+    this.appointments.filter(a => a.status === 'activa' || a.status === 'pendiente')
+  );
 
-  setSection(s: string) { this.activeSection.set(s); this.sidebarOpen.set(false); }
-  toggleSidebar()       { this.sidebarOpen.set(!this.sidebarOpen()); }
-  markAllRead()         { this.notifications.forEach(n => n.read = true); }
+  historyAppointments = computed(() =>
+    this.appointments.filter(a => a.status === 'completada' || a.status === 'cancelada')
+  );
 
-  getStars(rating: number) { return Array(5).fill(0).map((_, i) => i + 1); }
+  unreadCount = computed(() =>
+    this.notifications.filter(n => !n.read).length
+  );
 
-  statusClass(s: string): string {
-    return ({ activa: 'st-active', pendiente: 'st-pending', completada: 'st-done', cancelada: 'st-cancelled' } as any)[s] || '';
+  setSection(s: string) {
+    this.activeSection.set(s);
+    this.sidebarOpen.set(false);
   }
-  statusLabel(s: string): string {
-    return ({ activa: 'Activa', pendiente: 'Pendiente', completada: 'Completada', cancelada: 'Cancelada' } as any)[s] || s;
+
+  toggleSidebar() {
+    this.sidebarOpen.set(!this.sidebarOpen());
+  }
+
+  markAllRead() {
+    this.notifications.forEach(n => n.read = true);
   }
 
   switchToEnfermero() {
@@ -107,6 +132,6 @@ export class PacienteDashboard {
   }
 
   get firstName(): string {
-  return this.auth.user()?.name?.split(' ')[0] ?? '';
-}
+    return this.auth.user()?.name?.split(' ')[0] ?? '';
+  }
 }

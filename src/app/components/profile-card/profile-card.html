@@ -1,0 +1,41 @@
+<div class="profile-card">
+
+  <!-- Fondo -->
+  <div class="card-header">
+    <img [src]="nurse.coverImage" class="cover-img" />
+  </div>
+
+  <!-- Imagen perfil -->
+  <div class="profile-img-container">
+    <img [src]="nurse.profileImage" class="profile-img" />
+  </div>
+
+  <!-- Info -->
+  <div class="card-body">
+
+    <h3 class="name">{{ nurse.name }}</h3>
+    <p class="specialty">{{ nurse.specialty }}</p>
+
+    <div class="rating">
+      ⭐ {{ nurse.rating }} ({{ nurse.reviews }})
+    </div>
+
+    <div class="meta">
+      <span>📍 {{ nurse.distance }}</span>
+      <span>💼 {{ nurse.experience }} años</span>
+    </div>
+
+    <div class="footer">
+      <span class="price">${{ nurse.price }}/hr</span>
+
+      <button 
+        class="btn"
+        [disabled]="!nurse.available"
+        (click)="agendar()">
+        {{ nurse.available ? 'Agendar' : 'No disponible' }}
+      </button>
+    </div>
+
+  </div>
+
+</div>
