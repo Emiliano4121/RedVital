@@ -12,8 +12,11 @@
                 </p>
                 
                 <div class="d-flex gap-3">
-                    <button class="btn btn-primary btn-lg px-4" routerLink="/busqueda">Solicitar Enfermero</button>
-                    <button class="btn btn-outline-light btn-lg px-4">Soy Enfermero</button>
+                   <button class="btn btn-primary px-4 py-2" 
+                   (click)="irPaciente()">Solicitar enfermero</button>
+
+                   <button class="btn btn-outline-light px-4 py-2"
+                   (click)="irEnfermero()">Soy enfermero</button>
                 </div>
             </div>
 
