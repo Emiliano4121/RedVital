@@ -6,8 +6,8 @@ import { EnfereroDashboard } from './pages/Dashboard/enfermero/enfermero';
 export const routes: Routes = [
   { path: '',                    component: Home,              title: 'RedVital - Inicio'          },
   { path: 'busqueda',            component: Search,            title: 'RedVital - Búsqueda'        },
-  { path: 'dashboard/paciente',  component: PacienteDashboard, title: 'RedVital - Mi Dashboard'    },
-  { path: 'dashboard/enfermero', component: EnfereroDashboard, title: 'RedVital - Panel Enfermero' },
+  { path: 'dashboard/paciente',  component: PacienteDashboard, title: 'RedVital - Mi Dashboard', data: { hideNavbar: true } },
+  { path: 'dashboard/enfermero', component: EnfereroDashboard, title: 'RedVital - Panel Enfermero', data: { hideNavbar: true } },
   // Cuando integres auth real, agrega guards aquí:
   // { path: 'dashboard/paciente', component: PacienteDashboard, canActivate: [authGuard('paciente')] },
   { path: '**', redirectTo: '' }
