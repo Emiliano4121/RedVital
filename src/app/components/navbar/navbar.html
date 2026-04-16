@@ -10,7 +10,7 @@
 
     <ul class="nav-links">
       <li><a href="#" class="nav-item">Inicio</a></li>
-      <li><a href="#" class="nav-item">¿Quiénes somos?</a></li>
+      <li><a href="#" class="nav-item" (click)="irSobreNosotros(); $event.preventDefault()">¿Quiénes somos?</a></li>
       <li>
         <button class="btn-login" (click)="openLoginModal(); $event.preventDefault()">
           Iniciar sesión

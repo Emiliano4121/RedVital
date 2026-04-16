@@ -1,0 +1,77 @@
+<div class="about-container">
+  <section class="hero-minimal">
+    <div class="content-wrapper">
+      <span class="launch-badge">Próximo Lanzamiento</span>
+      <h1 class="main-title">Reinventando el <span class="gradient-text">Cuidado en Casa</span></h1>
+      <p class="hero-description">
+        Red Vital es la nueva plataforma digital en México diseñada para conectar familias con enfermeros certificados. 
+        <strong>Seguridad, Personalización e Inmediatez.</strong>
+      </p>
+    </div>
+  </section>
+
+  <section class="purpose-grid">
+    <div class="container">
+      <div class="row g-4 align-items-center">
+        <div class="col-lg-6">
+          <div class="feature-image" style="background-image: url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&q=80&w=1000');">
+            <div class="glass-overlay">
+              <i class="bi bi-shield-check"></i>
+              <span>Verificación de Perfiles</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6 ps-lg-5">
+          <h2 class="section-label">¿Quiénes Somos?</h2>
+          <h3 class="display-6 fw-bold mb-4">Uniendo Tecnología y Salud</h3>
+          <p class="text-secondary mb-4">
+            Somos un equipo multidisciplinario enfocado en enfermería, tecnología y gestión clínica. 
+            Nuestra misión es facilitar cuidados profesionales, seguros y accesibles directamente en tu hogar.
+          </p>
+          <div class="mission-bullets">
+            <div class="bullet-item">
+              <i class="bi bi-heart-fill"></i>
+              <span>Atención para adultos mayores y crónicos</span>
+            </div>
+            <div class="bullet-item">
+              <i class="bi bi-phone-vibrate"></i>
+              <span>Soporte continuo vía App y teléfono</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="values-modern">
+    <div class="container">
+      <div class="header-center">
+        <h2>Nuestro ADN</h2>
+        <p>Los pilares que sostienen nuestra red</p>
+      </div>
+      <div class="row g-4">
+        @for (val of [
+          {title: 'Confianza', icon: 'shield-lock', desc: 'Proceso de verificación estricto para cada profesional registrado.'},
+          {title: 'Empatía', icon: 'heart-pulse', desc: 'Atención centrada en el bienestar y la dignidad del paciente.'},
+          {title: 'Innovación', icon: 'lightning-charge', desc: 'Plataforma intuitiva para una conexión rápida y sin complicaciones.'}
+        ]; track val.title) {
+          <div class="col-md-4">
+            <div class="modern-val-card">
+              <div class="val-icon"><i class="bi bi-{{val.icon}}"></i></div>
+              <h4>{{val.title}}</h4>
+              <p>{{val.desc}}</p>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="cta-box">
+      <h2 class="mb-4">Haciendo la salud más humana</h2>
+      <p class="mb-4">Red Vital transforma la forma en que la atención llega a tu familia.</p>
+      <button class="btn-modern-white" (click)="volverInicio()">Descubrir proyecto</button>
+    </div>
+  </section>
+</div>

@@ -19,4 +19,8 @@ export class Home {
   irEnfermero() {
     this.router.navigate(['/dashboard/enfermero']);
   }
+
+  irSobreNosotros() {
+    this.router.navigate(['/sobre-nosotros']);
+  }
 }

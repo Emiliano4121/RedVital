@@ -1,0 +1,189 @@
+// about-us.scss
+$blue-main: #2563eb;
+$blue-light: #38bdf8;
+$dark: #0f172a;
+$gray: #64748b;
+$white: #ffffff;
+$radius: 24px;
+$transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+.about-container {
+  background: #fdfdfd;
+  font-family: 'Inter', system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+// HERO SECTION
+.hero-minimal {
+  padding: 120px 0 80px;
+  text-align: center;
+  background: radial-gradient(circle at top right, rgba($blue-main, 0.05), transparent 40%),
+              radial-gradient(circle at bottom left, rgba($blue-light, 0.05), transparent 40%);
+
+  .launch-badge {
+    background: rgba($blue-main, 0.1);
+    color: $blue-main;
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .main-title {
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    margin: 20px 0;
+    color: $dark;
+    
+    .gradient-text {
+      background: linear-gradient(90deg, $blue-main, $blue-light);
+      -webkit-background-clip: text; 
+      background-clip: text; // CORRECCIÓN: Propiedad estándar añadida
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  .hero-description {
+    max-width: 650px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    color: $gray;
+    line-height: 1.6;
+  }
+}
+
+// FEATURE IMAGE
+.feature-image {
+  height: 480px;
+  border-radius: $radius;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.08);
+
+  .glass-overlay {
+    position: absolute;
+    bottom: 25px;
+    left: 25px;
+    right: 25px;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 18px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: $dark;
+    font-weight: 700;
+    
+    i { font-size: 1.5rem; color: $blue-main; }
+  }
+}
+
+.section-label {
+  color: $blue-main;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+}
+
+.mission-bullets {
+  .bullet-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-weight: 500;
+    color: $dark;
+    i { color: $blue-main; }
+  }
+}
+
+// VALUES GRID
+.values-modern {
+  padding: 80px 0;
+  
+  .header-center {
+    text-align: center;
+    margin-bottom: 50px;
+    h2 { font-weight: 800; }
+  }
+
+  .modern-val-card {
+    background: $white;
+    padding: 40px;
+    border-radius: $radius;
+    height: 100%;
+    transition: $transition;
+    border: 1px solid rgba(0,0,0,0.03);
+
+    .val-icon {
+      width: 50px;
+      height: 50px;
+      background: rgba($blue-main, 0.05);
+      color: $blue-main;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      transition: $transition;
+    }
+
+    h4 { font-weight: 700; margin-bottom: 12px; }
+    p { color: $gray; font-size: 0.9rem; line-height: 1.5; }
+
+    &:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+      border-color: rgba($blue-main, 0.1);
+      
+      .val-icon {
+        background: $blue-main;
+        color: white;
+      }
+    }
+  }
+}
+
+// FINAL CTA
+.final-cta {
+  padding: 0 0 100px;
+  
+  .cta-box {
+    background: $dark;
+    background-image: linear-gradient(135deg, $dark 0%, #1e293b 100%);
+    padding: 70px 30px;
+    border-radius: $radius * 1.5;
+    text-align: center;
+    color: white;
+    max-width: 1000px;
+    margin: 0 auto;
+
+    h2 { font-weight: 800; }
+    p { opacity: 0.7; }
+  }
+}
+
+.btn-modern-white {
+  background: $white;
+  color: $dark;
+  border: none;
+  padding: 14px 35px;
+  border-radius: 12px;
+  font-weight: 700;
+  transition: $transition;
+  margin-top: 20px;
+  
+  &:hover {
+    background: $blue-light;
+    color: $white;
+    transform: scale(1.03);
+  }
+}
