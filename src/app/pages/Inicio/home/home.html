@@ -64,29 +64,35 @@
 
 <section class="specialties-section">
     <div class="container">
-        <div class="row g-4">
-            <div class="col-lg-8">
+        <!-- Fila independiente para el título -->
+        <div class="row">
+            <div class="col-12">
                 <h2 class="section-title">Nuestras Especialidades</h2>
                 <p class="section-subtitle">Servicios integrales para cada etapa de la vida.</p>
-                
-                <div class="row g-4 mt-2">
-                    <div class="col-md-6 col-lg-4" *ngFor="let item of [
+            </div>
+        </div>
+        <!-- Fila para el contenido: especialidades (izquierda) y panel "Por qué elegir" (derecha) -->
+        <div class="row g-2 mt-2">
+            <div class="col-lg-8">
+                <div class="row g-4">
+                    @for (item of [
                         {icon: 'heart-pulse', title: 'General', desc: 'Cuidados básicos integrales.'},
                         {icon: 'activity', title: 'Críticos', desc: 'Pacientes en condiciones delicadas.'},
                         {icon: 'emoji-smile', title: 'Pediatría', desc: 'Cuidado para los más pequeños.'},
                         {icon: 'person-hearts', title: 'Geriatría', desc: 'Atención dedicada al adulto mayor.'},
                         {icon: 'bandaid', title: 'Curaciones', desc: 'Tratamiento de heridas y terapias.'},
                         {icon: 'person-wheelchair', title: 'Rehabilitación', desc: 'Apoyo post-operatorio.'}
-                    ]">
-                        <div class="specialty-card">
-                            <div class="s-icon"><i class="bi bi-{{item.icon}}"></i></div>
-                            <h5>{{item.title}}</h5>
-                            <p>{{item.desc}}</p>
+                    ]; track item.title) {
+                        <div class="col-md-6 col-lg-4">
+                            <div class="specialty-card">
+                                <div class="s-icon"><i class="bi bi-{{item.icon}}"></i></div>
+                                <h5>{{item.title}}</h5>
+                                <p>{{item.desc}}</p>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
-            
             <div class="col-lg-4">
                 <div class="why-choose-glass">
                     <h3>¿Por Qué Elegir Red Vital?</h3>

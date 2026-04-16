@@ -2,7 +2,7 @@
 :root {
   --primary-blue: #2563eb;
   --secondary-blue: #3b82f6;
-  --text-main: #1e293b;
+  --text-main: #c7ccd3;
   --glass-bg: rgba(255, 255, 255, 0.8);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -107,7 +107,7 @@
     span {
       // Ajustamos el color secundario para que combine mejor con el rojo
       // Un azul grisáceo o el mismo text-main con menos peso funciona bien.
-      color: #64748b; 
+      color: #c0c4ca; 
       font-weight: 300; // Más ligero para contraste de peso
     }
   }
@@ -153,7 +153,7 @@
 
 .btn-login {
   background: var(--primary-blue);
-  color: white;
+  color: #6695f8;
   border: none;
   padding: 10px 24px;
   border-radius: 50px; // Botón tipo píldora (muy moderno)
