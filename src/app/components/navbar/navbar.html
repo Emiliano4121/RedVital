@@ -1,14 +1,24 @@
 <nav class="navbar">
-  <div class="logo">
-    <span>RedVital</span>
-  </div>
+  <div class="navbar-container">
+    
+    <div class="logo">
+      <div class="logo-icon">
+        <div class="heart-line"></div>
+      </div>
+      <span class="logo-text">Red<span>Vital</span></span>
+    </div>
 
-  <ul class="nav-links">
-    <li><a href="#">¿Quiénes somos?</a></li>
-    <li><a href="#">Inicio</a></li>
-    <li><a href="#" (click)="openLoginModal(); $event.preventDefault()">Iniciar sesión</a></li>
-  </ul>
+    <ul class="nav-links">
+      <li><a href="#" class="nav-item">Inicio</a></li>
+      <li><a href="#" class="nav-item">¿Quiénes somos?</a></li>
+      <li>
+        <button class="btn-login" (click)="openLoginModal(); $event.preventDefault()">
+          Iniciar sesión
+        </button>
+      </li>
+    </ul>
+
+  </div>
 </nav>
 
-<!-- Incluye el componente del modal -->
 <app-login></app-login>

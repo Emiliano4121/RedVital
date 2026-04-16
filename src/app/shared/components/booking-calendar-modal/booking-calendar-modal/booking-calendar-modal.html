@@ -1,0 +1,99 @@
+@if (isOpen) {
+  <div class="modal-backdrop" (click)="onBackdropClick($event)">
+    <div class="modal" role="dialog" aria-modal="true">
+      <header class="modal-header">
+        <h2>{{ title }}</h2>
+        <button class="close-btn" (click)="close()" aria-label="Cerrar">×</button>
+      </header>
+
+      <div class="modal-body">
+        <div class="range-summary">{{ rangeSummary() }}</div>
+
+        <div class="calendars">
+          <!-- Mes izquierdo -->
+          <div class="calendar">
+            <div class="calendar-header">
+              <button class="nav-btn" (click)="prevMonth()" aria-label="Mes anterior">‹</button>
+              <span class="month-label">{{ monthLabel(leftMonth()) }}</span>
+              <span class="nav-spacer"></span>
+            </div>
+            <div class="weekdays">
+              @for (w of weekDays; track w) { <span>{{ w }}</span> }
+            </div>
+            <div class="days-grid">
+              @for (day of leftMonthDays(); track trackByDate($index, day)) {
+                <button class="day"
+                  [class.other-month]="!day.isCurrentMonth"
+                  [class.today]="day.isToday"
+                  [class.disabled]="day.isDisabled"
+                  [class.start]="day.isStart"
+                  [class.end]="day.isEnd"
+                  [class.in-range]="day.isInRange"
+                  [class.hover-range]="day.isHoverRange"
+                  [disabled]="day.isDisabled"
+                  (click)="selectDay(day)"
+                  (mouseenter)="onDayHover(day)"
+                  (mouseleave)="onDayLeave()">
+                  {{ day.day }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <!-- Mes derecho -->
+          <div class="calendar">
+            <div class="calendar-header">
+              <span class="nav-spacer"></span>
+              <span class="month-label">{{ monthLabel(rightMonth()) }}</span>
+              <button class="nav-btn" (click)="nextMonth()" aria-label="Mes siguiente">›</button>
+            </div>
+            <div class="weekdays">
+              @for (w of weekDays; track w) { <span>{{ w }}</span> }
+            </div>
+            <div class="days-grid">
+              @for (day of rightMonthDays(); track trackByDate($index, day)) {
+                <button class="day"
+                  [class.other-month]="!day.isCurrentMonth"
+                  [class.today]="day.isToday"
+                  [class.disabled]="day.isDisabled"
+                  [class.start]="day.isStart"
+                  [class.end]="day.isEnd"
+                  [class.in-range]="day.isInRange"
+                  [class.hover-range]="day.isHoverRange"
+                  [disabled]="day.isDisabled"
+                  (click)="selectDay(day)"
+                  (mouseenter)="onDayHover(day)"
+                  (mouseleave)="onDayLeave()">
+                  {{ day.day }}
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+
+        <div class="time-selectors">
+          <label>
+            <span>Hora de entrada</span>
+            <select [ngModel]="startTime()" (ngModelChange)="startTime.set($event)">
+              @for (h of hours; track h) { <option [value]="h">{{ h }}</option> }
+            </select>
+          </label>
+          <label>
+            <span>Hora de salida</span>
+            <select [ngModel]="endTime()" (ngModelChange)="endTime.set($event)">
+              @for (h of hours; track h) { <option [value]="h">{{ h }}</option> }
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button class="btn-link" (click)="clear()">Limpiar</button>
+        <div class="spacer"></div>
+        <button class="btn-primary" (click)="confirm()" [disabled]="isConfirmDisabled()">
+          Confirmar
+        </button>
+      </footer>
+    </div>
+  </div>
+}
