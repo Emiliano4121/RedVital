@@ -1,3 +1,4 @@
+<!-- paciente.html -->
 <div class="dash-wrapper">
 
   <!-- OVERLAY -->
@@ -5,59 +6,84 @@
 
   <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar" [class.open]="sidebarOpen()">
-    
+
     <div class="sb-brand">
-      <i class="bi bi-heart-pulse-fill brand-icon"></i>
-      <span>RedVital</span>
+      <div class="brand-logo">
+        <i class="bi bi-heart-pulse-fill"></i>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">RedVital</span>
+        <span class="brand-tag">Tu salud, en casa</span>
+      </div>
     </div>
 
     <div class="sb-user">
-      <div class="avatar-md">{{ auth.user()?.avatar }}</div>
-      <div>
+      <div class="avatar-md">
+        {{ auth.user()?.avatar }}
+        <span class="online-dot"></span>
+      </div>
+      <div class="sb-user-info">
         <p class="sb-name">{{ auth.user()?.name }}</p>
-        <span class="role-chip paciente-chip">Paciente</span>
+        <span class="role-chip paciente-chip">
+          <i class="bi bi-shield-check"></i> Paciente
+        </span>
       </div>
     </div>
 
     <nav class="sb-nav">
+      <span class="nav-group-label">Principal</span>
+
       <button class="sb-item" [class.active]="activeSection()==='inicio'" (click)="setSection('inicio')">
-        <i class="bi bi-house-door-fill"></i> Inicio
+        <i class="bi bi-house-door-fill"></i>
+        <span>Inicio</span>
       </button>
 
       <button class="sb-item" [class.active]="activeSection()==='enfermeros'" (click)="setSection('enfermeros')">
-        <i class="bi bi-people-fill"></i> Enfermeros
+        <i class="bi bi-people-fill"></i>
+        <span>Enfermeros</span>
       </button>
 
       <button class="sb-item" [class.active]="activeSection()==='citas'" (click)="setSection('citas')">
-        <i class="bi bi-calendar-check-fill"></i> Mis citas
+        <i class="bi bi-calendar-check-fill"></i>
+        <span>Mis citas</span>
+        @if (activeAppointments().length) {
+          <span class="badge badge-soft">{{ activeAppointments().length }}</span>
+        }
       </button>
 
       <button class="sb-item" [class.active]="activeSection()==='historial'" (click)="setSection('historial')">
-        <i class="bi bi-clock-history"></i> Historial
+        <i class="bi bi-clock-history"></i>
+        <span>Historial</span>
       </button>
 
+      <span class="nav-group-label">Cuenta</span>
+
       <button class="sb-item" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
-        <i class="bi bi-bell-fill"></i> Notificaciones
+        <i class="bi bi-bell-fill"></i>
+        <span>Notificaciones</span>
         @if (unreadCount()) {
           <span class="badge">{{ unreadCount() }}</span>
         }
       </button>
 
       <button class="sb-item" [class.active]="activeSection()==='perfil'" (click)="setSection('perfil')">
-        <i class="bi bi-person-fill"></i> Mi perfil
+        <i class="bi bi-person-fill"></i>
+        <span>Mi perfil</span>
       </button>
 
       <button class="sb-item" [class.active]="activeSection()==='configuracion'" (click)="setSection('configuracion')">
-        <i class="bi bi-gear-fill"></i> Configuración
+        <i class="bi bi-gear-fill"></i>
+        <span>Configuración</span>
       </button>
     </nav>
 
     <div class="sb-footer">
       <button class="demo-btn" (click)="switchToEnfermero()">
+        <i class="bi bi-arrow-left-right"></i>
         Vista Enfermero
       </button>
-
       <button class="logout-btn" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i>
         Cerrar sesión
       </button>
     </div>
@@ -68,21 +94,42 @@
 
     <!-- TOPBAR -->
     <header class="topbar">
-      <button class="hamburger" (click)="toggleSidebar()">☰</button>
+      <button class="hamburger" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
 
-      <h1 class="tb-title">
-        @switch(activeSection()) {
-          @case('inicio') { Inicio }
-          @case('enfermeros') { Enfermeros }
-          @case('citas') { Mis Citas }
-          @case('historial') { Historial }
-          @case('notificaciones') { Notificaciones }
-          @case('perfil') { Perfil }
-          @case('configuracion') { Configuración }
-        }
-      </h1>
+      <div class="tb-title-wrap">
+        <h1 class="tb-title">
+          @switch(activeSection()) {
+            @case('inicio') { Inicio }
+            @case('enfermeros') { Enfermeros }
+            @case('citas') { Mis Citas }
+            @case('historial') { Historial }
+            @case('notificaciones') { Notificaciones }
+            @case('perfil') { Perfil }
+            @case('configuracion') { Configuración }
+          }
+        </h1>
+        <p class="tb-subtitle">
+          @switch(activeSection()) {
+            @case('inicio') { Bienvenido de regreso }
+            @case('enfermeros') { Encuentra tu enfermero ideal }
+            @case('citas') { Gestiona tus próximas citas }
+            @case('historial') { Consulta tus citas anteriores }
+            @case('notificaciones') { Mantente al día }
+            @case('perfil') { Tu información personal }
+            @case('configuracion') { Personaliza tu experiencia }
+          }
+        </p>
+      </div>
 
       <div class="tb-right">
+        <button class="tb-icon-btn" (click)="setSection('notificaciones')" aria-label="Notificaciones">
+          <i class="bi bi-bell"></i>
+          @if (unreadCount()) {
+            <span class="dot">{{ unreadCount() }}</span>
+          }
+        </button>
         <div class="avatar-sm">{{ auth.user()?.avatar }}</div>
       </div>
     </header>
@@ -93,24 +140,93 @@
       <!-- ===== INICIO ===== -->
       @if (activeSection() === 'inicio') {
 
-        <div class="banner paciente-banner">
-          <div>
-            <h2>¡Hola, {{ firstName }}! 👋</h2>
-            <p>¿Qué tipo de atención necesitas hoy?</p>
+        <section class="banner paciente-banner">
+          <div class="banner-content">
+            <span class="banner-pill">
+              <i class="bi bi-sun-fill"></i> Hoy
+            </span>
+            <h2>¡Hola, {{ firstName }}! <span class="wave">👋</span></h2>
+            <p>¿Qué tipo de atención necesitas hoy? Estamos aquí para cuidarte.</p>
+            <div class="banner-actions">
+              <button class="btn-accent" (click)="setSection('enfermeros')">
+                <i class="bi bi-search"></i> Buscar enfermero
+              </button>
+              <button class="btn-ghost" (click)="setSection('citas')">
+                <i class="bi bi-calendar3"></i> Ver mis citas
+              </button>
+            </div>
           </div>
+          <div class="banner-decor">
+            <div class="decor-blob blob-1"></div>
+            <div class="decor-blob blob-2"></div>
+            <i class="bi bi-heart-pulse banner-icon"></i>
+          </div>
+        </section>
 
-          <button class="btn-accent" (click)="setSection('enfermeros')">
-            Buscar enfermero
+        <!-- STATS -->
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-ico blue"><i class="bi bi-calendar-event-fill"></i></div>
+            <div class="stat-info">
+              <p class="sv">{{ activeAppointments().length }}</p>
+              <p class="sl">Citas activas</p>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-ico green"><i class="bi bi-check-circle-fill"></i></div>
+            <div class="stat-info">
+              <p class="sv">{{ historyAppointments().length }}</p>
+              <p class="sl">Completadas</p>
+            </div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-ico red"><i class="bi bi-bell-fill"></i></div>
+            <div class="stat-info">
+              <p class="sv">{{ unreadCount() }}</p>
+              <p class="sl">Sin leer</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- SERVICIOS RÁPIDOS -->
+        <div class="section-head">
+          <h3><i class="bi bi-lightning-charge-fill"></i> Servicios rápidos</h3>
+        </div>
+
+        <div class="services-grid">
+          <button class="svc-card" (click)="setSection('enfermeros')">
+            <div class="svc-ico bg-red"><i class="bi bi-bandaid-fill"></i></div>
+            <p class="svc-title">Curaciones</p>
+            <p class="svc-desc">Atención de heridas</p>
+          </button>
+          <button class="svc-card" (click)="setSection('enfermeros')">
+            <div class="svc-ico bg-blue"><i class="bi bi-droplet-fill"></i></div>
+            <p class="svc-title">Inyecciones</p>
+            <p class="svc-desc">Aplicación profesional</p>
+          </button>
+          <button class="svc-card" (click)="setSection('enfermeros')">
+            <div class="svc-ico bg-green"><i class="bi bi-activity"></i></div>
+            <p class="svc-title">Signos vitales</p>
+            <p class="svc-desc">Monitoreo en casa</p>
+          </button>
+          <button class="svc-card" (click)="setSection('enfermeros')">
+            <div class="svc-ico bg-purple"><i class="bi bi-person-hearts"></i></div>
+            <p class="svc-title">Geriatría</p>
+            <p class="svc-desc">Adultos mayores</p>
           </button>
         </div>
 
+        <!-- ENFERMEROS -->
         <div class="section-head">
-          <h3>Enfermeros cerca de ti</h3>
+          <h3><i class="bi bi-geo-alt-fill"></i> Enfermeros cerca de ti</h3>
+          <button class="link-btn" (click)="setSection('enfermeros')">
+            Ver todos <i class="bi bi-arrow-right"></i>
+          </button>
         </div>
 
         <div class="nurses-grid">
           @for (n of nurses; track n.id) {
-            <app-profile-card 
+            <app-profile-card
               [nurse]="n"
               (agendarClick)="openModal($event)">
             </app-profile-card>
@@ -122,13 +238,22 @@
       <!-- ===== ENFERMEROS ===== -->
       @if (activeSection() === 'enfermeros') {
 
+        <div class="search-bar">
+          <i class="bi bi-search"></i>
+          <input type="text" placeholder="Buscar por nombre, especialidad o zona...">
+          <button class="filter-btn">
+            <i class="bi bi-sliders"></i>
+          </button>
+        </div>
+
         <div class="section-head">
           <h3>Todos los enfermeros</h3>
+          <span class="count-chip">{{ nurses.length }} disponibles</span>
         </div>
 
         <div class="nurses-grid full">
           @for (n of nurses; track n.id) {
-            <app-profile-card 
+            <app-profile-card
               [nurse]="n"
               (agendarClick)="openModal($event)">
             </app-profile-card>
@@ -141,21 +266,60 @@
       @if (activeSection() === 'citas') {
         @if (!activeAppointments().length) {
           <div class="empty">
-            <i class="bi bi-calendar-x"></i>
-            <p>No tienes citas activas.</p>
+            <div class="empty-ico"><i class="bi bi-calendar-x"></i></div>
+            <h4>Sin citas activas</h4>
+            <p>Cuando agendes una cita con un enfermero, aparecerá aquí.</p>
+            <button class="btn-accent" (click)="setSection('enfermeros')">
+              <i class="bi bi-plus-lg"></i> Agendar cita
+            </button>
           </div>
         } @else {
           @for (a of activeAppointments(); track a.id) {
             <div class="apt-row">
+              <div class="apt-date-box">
+                <span class="apt-day">{{ a.date }}</span>
+                <span class="apt-time-big">{{ a.time }}</span>
+              </div>
               <div class="apt-left">
-                <p class="apt-nurse">{{ a.nurseName }}</p>
+                <span class="st-chip" [class.st-active]="a.status==='activa'" [class.st-pending]="a.status==='pendiente'">
+                  {{ a.status }}
+                </span>
+                <p class="apt-nurse"><i class="bi bi-person-badge-fill"></i> {{ a.nurseName }}</p>
                 <p class="apt-svc">{{ a.service }}</p>
-                <p class="apt-addr">{{ a.address }}</p>
+                <p class="apt-addr"><i class="bi bi-geo-alt"></i> {{ a.address }}</p>
               </div>
               <div class="apt-right">
-                <p class="apt-date">{{ a.date }}</p>
-                <p class="apt-time">{{ a.time }}</p>
-                <span class="st-chip">{{ a.status }}</span>
+                <button class="btn-outline-sm">Ver detalles</button>
+              </div>
+            </div>
+          }
+        }
+      }
+
+      <!-- ===== HISTORIAL ===== -->
+      @if (activeSection() === 'historial') {
+        @if (!historyAppointments().length) {
+          <div class="empty">
+            <div class="empty-ico"><i class="bi bi-clock-history"></i></div>
+            <h4>Aún no hay historial</h4>
+            <p>Tus citas completadas o canceladas aparecerán aquí.</p>
+          </div>
+        } @else {
+          @for (a of historyAppointments(); track a.id) {
+            <div class="apt-row apt-history">
+              <div class="apt-date-box muted">
+                <span class="apt-day">{{ a.date }}</span>
+                <span class="apt-time-big">{{ a.time }}</span>
+              </div>
+              <div class="apt-left">
+                <span class="st-chip"
+                      [class.st-done]="a.status==='completada'"
+                      [class.st-cancelled]="a.status==='cancelada'">
+                  {{ a.status }}
+                </span>
+                <p class="apt-nurse"><i class="bi bi-person-badge-fill"></i> {{ a.nurseName }}</p>
+                <p class="apt-svc">{{ a.service }}</p>
+                <p class="apt-addr"><i class="bi bi-geo-alt"></i> {{ a.address }}</p>
               </div>
             </div>
           }
@@ -164,38 +328,150 @@
 
       <!-- ===== NOTIFICACIONES ===== -->
       @if (activeSection() === 'notificaciones') {
-        @for (n of notifications; track n.id) {
-          <div class="notif" [class.unread]="!n.read">
-            <p>{{ n.message }}</p>
-            <small>{{ n.time }}</small>
+        @if (!notifications.length) {
+          <div class="empty">
+            <div class="empty-ico"><i class="bi bi-bell-slash"></i></div>
+            <h4>Sin notificaciones</h4>
+            <p>Te avisaremos en cuanto haya novedades.</p>
           </div>
+        } @else {
+          <div class="notif-head">
+            <p><strong>{{ unreadCount() }}</strong> sin leer</p>
+            @if (unreadCount()) {
+              <button class="link-btn" (click)="markAllRead()">
+                <i class="bi bi-check2-all"></i> Marcar todas como leídas
+              </button>
+            }
+          </div>
+
+          @for (n of notifications; track n.id) {
+            <div class="notif" [class.unread]="!n.read">
+              <div class="notif-ico"
+                   [class.green]="n.type==='success'"
+                   [class.blue]="n.type==='info'"
+                   [class.yellow]="n.type==='warning'">
+                @switch(n.type) {
+                  @case('success') { <i class="bi bi-check-circle-fill"></i> }
+                  @case('info') { <i class="bi bi-info-circle-fill"></i> }
+                  @case('warning') { <i class="bi bi-exclamation-triangle-fill"></i> }
+                  @default { <i class="bi bi-bell-fill"></i> }
+                }
+              </div>
+              <div class="notif-body">
+                <p class="notif-msg">{{ n.message }}</p>
+                <small class="notif-time"><i class="bi bi-clock"></i> {{ n.time }}</small>
+              </div>
+              @if (!n.read) {
+                <span class="unread-dot"></span>
+              }
+            </div>
+          }
         }
       }
 
       <!-- ===== PERFIL ===== -->
       @if (activeSection() === 'perfil') {
         <div class="profile-card">
+          <div class="profile-cover"></div>
           <div class="profile-avatar">{{ auth.user()?.avatar }}</div>
           <h3>{{ auth.user()?.name }}</h3>
+          <span class="role-chip paciente-chip">
+            <i class="bi bi-shield-check"></i> Paciente
+          </span>
 
           <div class="fields">
             <div class="field">
-              <label>Teléfono</label>
+              <label><i class="bi bi-telephone-fill"></i> Teléfono</label>
               <input [value]="profile.phone" class="inp">
             </div>
 
             <div class="field">
-              <label>Dirección</label>
+              <label><i class="bi bi-geo-alt-fill"></i> Dirección</label>
               <input [value]="profile.address" class="inp">
             </div>
           </div>
+
+          <button class="btn-accent btn-block">
+            <i class="bi bi-check2"></i> Guardar cambios
+          </button>
         </div>
       }
-<app-booking-modal
-  [nurse]="selectedNurse"
-  [visible]="showModal"
-  (close)="closeModal()">
-</app-booking-modal>
+
+      <!-- ===== CONFIGURACIÓN ===== -->
+      @if (activeSection() === 'configuracion') {
+        <div class="settings">
+
+          <div class="sg">
+            <p class="sg-title">Preferencias</p>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-bell-fill"></i> Notificaciones push</p>
+                <p class="ss">Recibe avisos en tiempo real</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="track"></span>
+              </label>
+            </div>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-envelope-fill"></i> Notificaciones por email</p>
+                <p class="ss">Correos informativos</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox">
+                <span class="track"></span>
+              </label>
+            </div>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-geo-alt-fill"></i> Ubicación</p>
+                <p class="ss">Encuentra enfermeros cercanos</p>
+              </div>
+              <label class="toggle">
+                <input type="checkbox" checked>
+                <span class="track"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="sg">
+            <p class="sg-title">Cuenta</p>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-key-fill"></i> Cambiar contraseña</p>
+                <p class="ss">Actualiza tu contraseña</p>
+              </div>
+              <button class="btn-outline">Cambiar</button>
+            </div>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-translate"></i> Idioma</p>
+                <p class="ss">Español (México)</p>
+              </div>
+              <button class="btn-outline">Cambiar</button>
+            </div>
+          </div>
+
+          <div class="sg danger">
+            <p class="sg-title red">Zona de peligro</p>
+            <div class="si">
+              <div class="si-text">
+                <p class="sl2"><i class="bi bi-exclamation-octagon-fill"></i> Eliminar cuenta</p>
+                <p class="ss">Esta acción no se puede deshacer</p>
+              </div>
+              <button class="btn-danger">Eliminar</button>
+            </div>
+          </div>
+
+        </div>
+      }
+
+      <app-booking-modal
+        [nurse]="selectedNurse"
+        [visible]="showModal"
+        (close)="closeModal()">
+      </app-booking-modal>
     </main>
   </div>
 </div>
