@@ -1,295 +1,328 @@
 <div class="dash-wrapper">
+  <div class="sidebar-overlay" [class.show]="sidebarOpen()" (click)="toggleSidebar()"></div>
 
-  <div class="overlay" [class.show]="sidebarOpen()" (click)="toggleSidebar()"></div>
-
-  <!-- ===== SIDEBAR ===== -->
   <aside class="sidebar" [class.open]="sidebarOpen()">
-    <div class="sb-brand">
-      <i class="bi bi-heart-pulse-fill brand-icon"></i>
-      <span>RedVital</span>
-    </div>
-
-    <div class="sb-user">
-      <div class="avatar-md">{{ auth.user()?.avatar }}</div>
-      <div>
-        <p class="sb-name">{{ auth.user()?.name }}</p>
-        <span class="role-chip enfermero-chip">Enfermero</span>
+    <div class="sidebar-header">
+      <div class="brand-container">
+        <div class="brand-logo">
+          <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <span class="brand-name">Red<span>Vital</span></span>
       </div>
     </div>
 
-    <!-- Toggle disponibilidad destacado -->
-    <div class="availability-panel" [class.avail]="available()">
-      <div class="avail-info">
-        <span class="avail-label">{{ available() ? '🟢 Disponible' : '🔴 No disponible' }}</span>
-        <span class="avail-sub">{{ available() ? 'Recibes nuevas solicitudes' : 'No recibes solicitudes' }}</span>
+    <div class="sidebar-user">
+      <div class="user-avatar-wrapper">
+        <div class="avatar-main">{{ auth.user()?.avatar }}</div>
+        <div class="status-indicator" [class.online]="available()"></div>
       </div>
-      <label class="toggle"><input type="checkbox" [checked]="available()" (change)="available.set(!available())"><span class="track"></span></label>
+      <div class="user-info">
+        <p class="user-name">{{ auth.user()?.name }}</p>
+        <span class="user-role">Enfermero Certificado</span>
+      </div>
     </div>
 
-    <nav class="sb-nav">
-      <button class="sb-item" [class.active]="activeSection()==='inicio'"         (click)="setSection('inicio')">
-        <i class="bi bi-house-door-fill"></i> Inicio
+    <div class="availability-card" [class.is-available]="available()">
+      <div class="avail-content">
+        <p class="avail-title">{{ available() ? 'En línea' : 'Desconectado' }}</p>
+        <p class="avail-desc">{{ available() ? 'Recibiendo pacientes' : 'Modo descanso' }}</p>
+      </div>
+      <label class="modern-switch">
+        <input type="checkbox" [checked]="available()" (change)="available.set(!available())">
+        <span class="switch-slider"></span>
+      </label>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-link" [class.active]="activeSection()==='inicio'" (click)="setSection('inicio')">
+        <i class="bi bi-grid-1x2-fill"></i> Panel General
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='servicios'"      (click)="setSection('servicios')">
-        <i class="bi bi-calendar-check-fill"></i> Servicios activos
-        @if (activeServices().length) { <span class="badge">{{ activeServices().length }}</span> }
+      
+      <button class="nav-link" [class.active]="activeSection()==='servicios'" (click)="setSection('servicios')">
+        <i class="bi bi-clipboard2-pulse-fill"></i> Servicios Activos
+        @if (activeServices().length) { <span class="nav-badge">{{ activeServices().length }}</span> }
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='historial'"      (click)="setSection('historial')">
-        <i class="bi bi-clock-history"></i> Historial
+
+      <button class="nav-link" [class.active]="activeSection()==='historial'" (click)="setSection('historial')">
+        <i class="bi bi-clock-history"></i> Mi Historial
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
-        <i class="bi bi-bell-fill"></i> Notificaciones
-        @if (unreadCount()) { <span class="badge">{{ unreadCount() }}</span> }
+
+      <button class="nav-link" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
+        <i class="bi bi-chat-dots-fill"></i> Notificaciones
+        @if (unreadCount()) { <span class="nav-badge pulse">{{ unreadCount() }}</span> }
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='perfil'"         (click)="setSection('perfil')">
-        <i class="bi bi-person-badge-fill"></i> Mi perfil profesional
+
+      <div class="nav-divider"></div>
+
+      <button class="nav-link" [class.active]="activeSection()==='perfil'" (click)="setSection('perfil')">
+        <i class="bi bi-person-vcard-fill"></i> Perfil Profesional
       </button>
-      <button class="sb-item" [class.active]="activeSection()==='configuracion'"  (click)="setSection('configuracion')">
-        <i class="bi bi-gear-fill"></i> Configuración
+      
+      <button class="nav-link" [class.active]="activeSection()==='configuracion'" (click)="setSection('configuracion')">
+        <i class="bi bi-sliders"></i> Ajustes
       </button>
     </nav>
 
-    <div class="sb-footer">
-      <button class="demo-btn" (click)="switchToPaciente()">
-        <i class="bi bi-arrow-left-right"></i> Vista Paciente (demo)
+    <div class="sidebar-footer">
+      <button class="btn-ghost-white" (click)="switchToPaciente()">
+        <i class="bi bi-arrow-left-right"></i> Cambiar a Paciente
       </button>
-      <button class="logout-btn" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+      <button class="btn-logout" (click)="logout()">
+        <i class="bi bi-box-arrow-right"></i> Cerrar Sesión
       </button>
     </div>
   </aside>
 
-  <!-- ===== MAIN ===== -->
-  <div class="main">
-
-    <header class="topbar">
-      <button class="hamburger" (click)="toggleSidebar()"><i class="bi bi-list"></i></button>
-      <h1 class="tb-title">
-        @switch(activeSection()) {
-          @case('inicio')         { Inicio }
-          @case('servicios')      { Servicios Activos }
-          @case('historial')      { Historial }
-          @case('notificaciones') { Notificaciones }
-          @case('perfil')         { Mi Perfil Profesional }
-          @case('configuracion')  { Configuración }
-        }
-      </h1>
-      <div class="tb-right">
-        <button class="tb-icon" (click)="setSection('notificaciones')">
-          <i class="bi bi-bell-fill"></i>
-          @if (unreadCount()) { <span class="dot">{{ unreadCount() }}</span> }
-        </button>
-        <div class="avatar-sm">{{ auth.user()?.avatar }}</div>
+  <div class="main-content">
+    <header class="main-header">
+      <div class="header-left">
+        <button class="mobile-toggle" (click)="toggleSidebar()"><i class="bi bi-list"></i></button>
+        <h1 class="page-title">
+          @switch(activeSection()) {
+            @case('inicio') { Resumen de Actividad }
+            @case('servicios') { Gestión de Servicios }
+            @case('historial') { Historial Clínico }
+            @case('notificaciones') { Centro de Mensajes }
+            @case('perfil') { Mi Perfil }
+            @case('configuracion') { Configuración }
+          }
+        </h1>
+      </div>
+      
+      <div class="header-right">
+        <div class="quick-notif" (click)="setSection('notificaciones')">
+          <i class="bi bi-bell"></i>
+          @if (unreadCount()) { <span class="notif-dot"></span> }
+        </div>
+        <div class="header-user-avatar">{{ auth.user()?.avatar }}</div>
       </div>
     </header>
 
-    <main class="body">
-
-      <!-- ====== INICIO ====== -->
+    <main class="content-body">
       @if (activeSection() === 'inicio') {
-        <div class="banner enfermero-banner">
-          <div>
-          <h2>¡Hola, {{ firstName }}! 👋</h2>
-            <p>{{ available() ? 'Estás disponible y recibiendo solicitudes.' : 'No estás recibiendo solicitudes nuevas.' }}</p>
+        <div class="welcome-banner">
+          <div class="banner-text">
+            <h2>¡Qué gusto verte, {{ firstName }}!</h2>
+            <p>Tienes {{ activeServices().length }} servicios pendientes para hoy. Tu impacto es vital.</p>
           </div>
-          <div class="banner-rating">
-            <span class="big-rating">{{ profile.rating }}</span>
-            <div>
-              <div class="stars-inline">
+          <div class="banner-score">
+            <div class="score-value">{{ profile.rating }}</div>
+            <div class="score-stars">
+              <div class="stars-row">
                 @for (s of getStars(profile.rating); track s) {
                   <i class="bi" [class.bi-star-fill]="s <= profile.rating" [class.bi-star]="s > profile.rating"></i>
                 }
               </div>
-              <span class="rating-sub">{{ profile.reviews }} reseñas</span>
+              <span>{{ profile.reviews }} opiniones</span>
             </div>
           </div>
         </div>
 
-        <div class="stats-row">
-          <div class="stat-box">
-            <i class="bi bi-calendar-check-fill" style="color:#10b981"></i>
-            <div><p class="sv">{{ activeServices().length }}</p><p class="sl">Servicios activos</p></div>
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-icon"><i class="bi bi-calendar2-check"></i></div>
+            <div class="stat-data">
+              <h3>{{ activeServices().length }}</h3>
+              <p>Activos</p>
+            </div>
           </div>
-          <div class="stat-box">
-            <i class="bi bi-check-circle-fill" style="color:#3b82f6"></i>
-            <div><p class="sv">{{ completedCount() }}</p><p class="sl">Completados</p></div>
+          <div class="stat-card green">
+            <div class="stat-icon"><i class="bi bi-person-heart"></i></div>
+            <div class="stat-data">
+              <h3>{{ completedCount() }}</h3>
+              <p>Pacientes atendidos</p>
+            </div>
           </div>
-          <div class="stat-box">
-            <i class="bi bi-star-fill" style="color:#f59e0b"></i>
-            <div><p class="sv">{{ profile.rating }}</p><p class="sl">Calificación</p></div>
+          <div class="stat-card gold">
+            <div class="stat-icon"><i class="bi bi-trophy"></i></div>
+            <div class="stat-data">
+              <h3>98%</h3>
+              <p>Satisfacción</p>
+            </div>
           </div>
         </div>
 
-        <!-- Solicitudes pendientes -->
-         @if (hasPendingServices) {
-          <div class="section-head">
-            <h3>⚡ Solicitudes pendientes</h3>
+        @if (hasPendingServices) {
+          <div class="section-title-wrapper mt-4">
+            <h3 class="section-title pulse-text"><i class="bi bi-lightning-fill"></i> Solicitudes Entrantes</h3>
           </div>
+          <div class="pending-requests-container">
+            @for (s of activeServices(); track s.id) {
+              @if (s.status === 'pendiente') {
+                <div class="premium-request-card">
+                  <div class="req-header">
+                    <div class="req-user">
+                      <div class="req-avatar">{{ s.patientName.charAt(0) }}</div>
+                      <div>
+                        <h4>{{ s.patientName }}</h4>
+                        <span>Nuevo Paciente</span>
+                      </div>
+                    </div>
+                    <div class="req-price">$120/hr</div>
+                  </div>
+                  <div class="req-body">
+                    <p><i class="bi bi-activity"></i> {{ s.service }}</p>
+                    <p><i class="bi bi-geo-alt"></i> {{ s.address }}</p>
+                    <p><i class="bi bi-calendar3"></i> {{ s.date }} • {{ s.time }}</p>
+                  </div>
+                  <div class="req-footer">
+                    <button class="btn-accept" (click)="acceptService(s.id)">Aceptar Servicio</button>
+                    <button class="btn-reject-ghost">Ignorar</button>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        }
+
+        <div class="section-title-wrapper mt-5">
+          <h3 class="section-title">Próximos Turnos</h3>
+          <button class="text-btn" (click)="setSection('servicios')">Ver agenda completa</button>
+        </div>
+        
+        <div class="services-list">
           @for (s of activeServices(); track s.id) {
-            @if (s.status === 'pendiente') {
-              <div class="request-card">
-                <div class="req-info">
-                  <p class="req-patient"><i class="bi bi-person-fill"></i> {{ s.patientName }}</p>
-                  <p class="req-svc">{{ s.service }}</p>
-                  <p class="req-addr"><i class="bi bi-geo-alt"></i> {{ s.address }}</p>
-                  <p class="req-date"><i class="bi bi-clock"></i> {{ s.date }} — {{ s.time }}</p>
-                </div>
-                <div class="req-actions">
-                  <button class="btn-accept" (click)="acceptService(s.id)">Aceptar</button>
-                  <button class="btn-reject">Rechazar</button>
-                </div>
-              </div>
+            @if (s.status === 'activa') {
+              <ng-container *ngTemplateOutlet="svcRow; context: { s: s }"></ng-container>
             }
           }
-        }
-
-        <!-- Próximos servicios -->
-        <div class="section-head mt-sec">
-          <h3>Próximos servicios</h3>
-          <button class="link-btn" (click)="setSection('servicios')">Ver todos →</button>
         </div>
-        @for (s of activeServices(); track s.id) {
-          @if (s.status === 'activa') {
-            <ng-container *ngTemplateOutlet="svcRow; context:{s}"></ng-container>
-          }
-        }
       }
 
-      <!-- ====== SERVICIOS ACTIVOS ====== -->
-      @if (activeSection() === 'servicios') {
-        @if (!activeServices().length) {
-          <div class="empty"><i class="bi bi-calendar-x"></i><p>No tienes servicios activos.</p></div>
-        } @else {
-          @for (s of activeServices(); track s.id) {
-            <ng-container *ngTemplateOutlet="svcRow; context:{s}"></ng-container>
-          }
-        }
-      }
-
-      <!-- ====== HISTORIAL ====== -->
-      @if (activeSection() === 'historial') {
-        @if (!historyServices().length) {
-          <div class="empty"><i class="bi bi-clock-history"></i><p>Tu historial está vacío.</p></div>
-        } @else {
-          @for (s of historyServices(); track s.id) {
-            <ng-container *ngTemplateOutlet="svcRow; context:{s}"></ng-container>
-          }
-        }
-      }
-
-      <!-- ====== NOTIFICACIONES ====== -->
-      @if (activeSection() === 'notificaciones') {
-        <div class="section-head">
-          <h3>{{ unreadCount() }} sin leer</h3>
-          @if (unreadCount()) { <button class="link-btn" (click)="markAllRead()">Marcar todas leídas</button> }
-        </div>
-        @for (n of notifications; track n.id) {
-          <div class="notif" [class.unread]="!n.read" (click)="n.read=true">
-            <i class="bi notif-ico"
-               [class.bi-check-circle-fill]="n.type==='success'"
-               [class.bi-info-circle-fill]="n.type==='info'"
-               [class.bi-exclamation-triangle-fill]="n.type==='warning'"
-               [class.green]="n.type==='success'"
-               [class.blue]="n.type==='info'"
-               [class.yellow]="n.type==='warning'"></i>
-            <div class="notif-body">
-              <p class="notif-msg">{{ n.message }}</p>
-              <span class="notif-time">{{ n.time }}</span>
+      @if (activeSection() === 'servicios' || activeSection() === 'historial') {
+        <div class="services-list container-fade">
+          @if (activeSection() === 'servicios' && !activeServices().length) {
+            <div class="empty-state">
+              <i class="bi bi-calendar-x"></i>
+              <p>No tienes servicios activos por ahora.</p>
             </div>
-            @if (!n.read) { <span class="unread-dot"></span> }
-          </div>
-        }
+          }
+          @for (s of (activeSection()==='servicios' ? activeServices() : historyServices()); track s.id) {
+            <ng-container *ngTemplateOutlet="svcRow; context: { s: s }"></ng-container>
+          }
+        </div>
       }
 
-      <!-- ====== PERFIL PROFESIONAL ====== -->
       @if (activeSection() === 'perfil') {
-        <div class="profile-grid">
-
-          <!-- Tarjeta principal -->
-          <div class="profile-card">
-            <div class="profile-avatar">{{ auth.user()?.avatar }}</div>
-            <h3>{{ auth.user()?.name }}</h3>
-            <span class="role-chip enfermero-chip">Enfermero</span>
-
-            <div class="nurse-stats">
-              <div class="ns"><span class="nsv">{{ profile.rating }}</span><span class="nsl"><i class="bi bi-star-fill" style="color:#f59e0b"></i> Rating</span></div>
-              <div class="ns"><span class="nsv">{{ profile.reviews }}</span><span class="nsl">Reseñas</span></div>
-              <div class="ns"><span class="nsv">{{ profile.experience }}</span><span class="nsl">Años exp.</span></div>
+        <div class="profile-layout container-fade">
+          <div class="profile-sidebar-info">
+            <div class="profile-main-card">
+              <div class="profile-header-bg"></div>
+              <div class="avatar-large">{{ auth.user()?.avatar }}</div>
+              <h3>{{ auth.user()?.name }}</h3>
+              <p class="specialty-tag">{{ profile.specialty }}</p>
+              
+              <div class="quick-stats">
+                <div class="qs-item"><strong>{{ profile.experience }}</strong><span>Años</span></div>
+                <div class="qs-item"><strong>{{ profile.rating }}</strong><span>Rating</span></div>
+                <div class="qs-item"><strong>{{ profile.reviews }}</strong><span>Reseñas</span></div>
+              </div>
             </div>
 
-            <div class="fields">
-              <div class="field"><label>Correo</label><input type="email" [value]="auth.user()?.email ?? ''" class="inp"></div>
-              <div class="field"><label>Teléfono</label><input type="tel" [value]="profile.phone" class="inp"></div>
-              <div class="field"><label>Especialidad</label><input type="text" [value]="profile.specialty" class="inp"></div>
-              <div class="field"><label>Tarifa por hora ($)</label><input type="number" [value]="profile.price" class="inp"></div>
-              <div class="field"><label>Descripción profesional</label><textarea class="inp" rows="3">{{ profile.description }}</textarea></div>
-            </div>
-            <button class="btn-accent mt">Guardar cambios</button>
-          </div>
-
-          <!-- Certificaciones -->
-          <div class="certs-card">
-            <h4 class="certs-title"><i class="bi bi-patch-check-fill"></i> Certificaciones</h4>
-            <div class="certs-list">
-              @for (cert of profile.certifications; track cert) {
-                <div class="cert-item"><i class="bi bi-check-circle-fill"></i> {{ cert }}</div>
-              }
-            </div>
-            <button class="btn-outline mt">+ Agregar certificación</button>
-
-            <h4 class="certs-title mt-sec"><i class="bi bi-graph-up"></i> Resumen de actividad</h4>
-            <div class="activity-summary">
-              <div class="act-row"><span>Servicios completados</span><strong>{{ completedCount() }}</strong></div>
-              <div class="act-row"><span>Tasa de aceptación</span><strong>90%</strong></div>
-              <div class="act-row"><span>Tiempo promedio de respuesta</span><strong>15 min</strong></div>
+            <div class="certs-container card-modern mt-4">
+              <h4 class="card-subtitle"><i class="bi bi-patch-check"></i> Certificaciones</h4>
+              <div class="tags-cloud">
+                @for (cert of profile.certifications; track cert) {
+                  <span class="cert-pill"><i class="bi bi-check2"></i> {{ cert }}</span>
+                }
+                <button class="add-tag">+ Añadir</button>
+              </div>
             </div>
           </div>
 
+          <div class="profile-content-forms card-modern">
+            <h4 class="card-subtitle">Información General</h4>
+            <div class="modern-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Correo Electrónico</label>
+                  <input type="email" [value]="auth.user()?.email" readonly>
+                </div>
+                <div class="form-group">
+                  <label>Teléfono de Contacto</label>
+                  <input type="tel" [value]="profile.phone">
+                </div>
+              </div>
+              <div class="form-group">
+                <label>Biografía Profesional</label>
+                <textarea rows="4">{{ profile.description }}</textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Tarifa por Hora (MXN)</label>
+                  <div class="input-with-prefix">
+                    <span>$</span>
+                    <input type="number" [value]="profile.price">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Ubicación Base</label>
+                  <input type="text" value="Oaxaca, México">
+                </div>
+              </div>
+              <div class="form-actions">
+                <button class="btn-primary-modern">Actualizar Perfil</button>
+              </div>
+            </div>
+          </div>
         </div>
       }
 
-      <!-- ====== CONFIGURACIÓN ====== -->
+      @if (activeSection() === 'notificaciones') {
+        <div class="notifications-container">
+          <div class="empty-state">
+            <i class="bi bi-chat-dots"></i>
+            <p>Todavía no hay notificaciones</p>
+          </div>
+        </div>
+      }
+
       @if (activeSection() === 'configuracion') {
-        <div class="settings">
-          <div class="sg">
-            <h4 class="sg-title">Cuenta</h4>
-            <div class="si"><div><p class="sl2">Cambiar contraseña</p><p class="ss">Actualiza periódicamente</p></div><button class="btn-outline">Cambiar</button></div>
-            <div class="si"><div><p class="sl2">Verificación en dos pasos</p><p class="ss">Seguridad extra</p></div>
-              <label class="toggle"><input type="checkbox"><span class="track"></span></label></div>
-          </div>
-          <div class="sg">
-            <h4 class="sg-title">Notificaciones</h4>
-            <div class="si"><div><p class="sl2">Alertas de nuevas solicitudes</p><p class="ss">Cuando un paciente te solicita</p></div>
-              <label class="toggle"><input type="checkbox" checked><span class="track"></span></label></div>
-            <div class="si"><div><p class="sl2">Recordatorios de citas</p><p class="ss">Antes de cada servicio</p></div>
-              <label class="toggle"><input type="checkbox" checked><span class="track"></span></label></div>
-          </div>
-          <div class="sg danger">
-            <h4 class="sg-title red">Zona de peligro</h4>
-            <div class="si"><div><p class="sl2">Cerrar sesión</p><p class="ss">Salir de tu cuenta</p></div>
-              <button class="btn-danger" (click)="logout()">Salir</button></div>
-            <div class="si"><div><p class="sl2">Eliminar cuenta</p><p class="ss">Acción permanente e irreversible</p></div>
-              <button class="btn-danger">Eliminar</button></div>
+        <div class="config-container card-modern">
+          <h4 class="card-subtitle">Preferencias de la cuenta</h4>
+          <div class="modern-form">
+            <div class="form-group">
+              <label>Idioma</label>
+              <select>
+                <option>Español</option>
+                <option>Inglés</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Notificaciones por correo</label>
+              <div class="modern-switch">
+                <input type="checkbox" checked>
+                <span class="switch-slider"></span>
+              </div>
+            </div>
           </div>
         </div>
       }
-
     </main>
   </div>
 </div>
 
-<!-- ===== TEMPLATE: SERVICE ROW ===== -->
 <ng-template #svcRow let-s="s">
-  <div class="svc-row">
-    <div class="svc-left">
-      <p class="svc-patient"><i class="bi bi-person-fill"></i> {{ s.patientName }}</p>
-      <p class="svc-name">{{ s.service }}</p>
-      <p class="svc-addr"><i class="bi bi-geo-alt"></i> {{ s.address }}</p>
+  <div class="modern-svc-card" [class.border-pending]="s.status === 'pendiente'">
+    <div class="svc-main">
+      <div class="svc-patient-avatar">{{ s.patientName.charAt(0) }}</div>
+      <div class="svc-details">
+        <h4>{{ s.patientName }}</h4>
+        <p class="svc-type">{{ s.service }}</p>
+        <p class="svc-loc"><i class="bi bi-geo-alt"></i> {{ s.address }}</p>
+      </div>
     </div>
-    <div class="svc-right">
-      <p class="svc-date">{{ s.date }}</p>
-      <p class="svc-time">{{ s.time }}</p>
-      <span class="st-chip" [class]="statusClass(s.status)">{{ statusLabel(s.status) }}</span>
+    <div class="svc-meta">
+      <div class="svc-time-info">
+        <span class="s-date">{{ s.date }}</span>
+        <span class="s-hour">{{ s.time }}</span>
+      </div>
+      <span class="status-badge" [class]="s.status">
+        {{ s.status === 'activa' ? 'En Curso' : s.status }}
+      </span>
+    </div>
+    <div class="svc-actions">
+      <button class="btn-icon-round"><i class="bi bi-chevron-right"></i></button>
     </div>
   </div>
 </ng-template>
