@@ -9,11 +9,12 @@ import { Nurse } from '../../../interfaces/nurse.interface';
 import { Appointment } from '../../../interfaces/appointment.interface';
 import { Notification } from '../../../interfaces/notification.interface';
 import { ProfileCard } from '../../../components/profile-card/profile-card';
+import { BookingModalComponent } from '../../../components/booking-modal/booking-modal';
 
 @Component({
   selector: 'app-paciente-dashboard',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProfileCard],
+  imports: [CommonModule, FormsModule, ProfileCard, BookingModalComponent],
   templateUrl: './paciente.html',
   styleUrls: ['./paciente.scss']
 })
@@ -37,6 +38,7 @@ export class PacienteDashboard {
       id: 1,
       name: 'Ana López',
       specialty: 'Cuidados Críticos',
+      description: 'Enfermera especializada en cuidados críticos con 8 años de experiencia.',
       rating: 5,
       reviews: 62,
       distance: '1.2 km',
@@ -50,6 +52,7 @@ export class PacienteDashboard {
       id: 2,
       name: 'Jorge Hernández',
       specialty: 'Geriatría',
+      description: 'Enfermero geriátrico con amplia experiencia en cuidado de adultos mayores.',
       rating: 4,
       reviews: 38,
       distance: '2.5 km',
@@ -63,6 +66,7 @@ export class PacienteDashboard {
       id: 3,
       name: 'Sofía Martínez',
       specialty: 'Pediatría',
+      description: 'Enfermera pediátrica con pasión por el cuidado de los niños.',
       rating: 5,
       reviews: 91,
       distance: '3.1 km',
@@ -75,15 +79,23 @@ export class PacienteDashboard {
   ];
 
   appointments: Appointment[] = [
-    {
-      id: 1,
-      nurseName: 'Ana López',
-      service: 'Cuidados post-operatorios',
-      date: '2025-12-15',
-      time: '10:00 AM',
-      status: 'activa',
-      address: 'Calle Principal 123'
-    }
+   {
+  id: 1,
+  nurseId: 1, 
+  nurseName: 'Ana López',
+
+  patientName: 'Paciente ejemplo', 
+  patientPhone: '0000000000',      
+
+  service: 'Cuidados post-operatorios',
+  date: '2025-12-15',
+  time: '10:00 AM',
+
+  status: 'activa',
+  address: 'Calle Principal 123',
+
+  notes: '' // opcional pero recomendado
+}
   ];
 
   notifications: Notification[] = [
@@ -134,4 +146,15 @@ export class PacienteDashboard {
   get firstName(): string {
     return this.auth.user()?.name?.split(' ')[0] ?? '';
   }
+  selectedNurse!: Nurse;
+showModal = false;
+
+openModal(nurse: Nurse) {
+  this.selectedNurse = nurse;
+  this.showModal = true;
+}
+
+closeModal() {
+  this.showModal = false;
+}
 }

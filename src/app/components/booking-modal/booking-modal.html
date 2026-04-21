@@ -1,0 +1,45 @@
+<div class="modal-overlay" *ngIf="visible">
+  <div class="modal-container">
+
+    <!-- Sidebar -->
+    <div class="nurse-info" *ngIf="nurse">
+      <img [src]="nurse.profileImage" alt="nurse">
+      <h3>{{ nurse.name }}</h3>
+      <p>{{ nurse.specialty }}</p>
+      <p>⭐ {{ nurse.rating }}</p>
+      <p class="desc">{{ nurse.description }}</p>
+    </div>
+
+    <!-- Form -->
+    <div class="form-section">
+      <h2>Agendar cita</h2>
+
+      <input type="text" placeholder="Tu nombre"
+        [(ngModel)]="appointment.patientName">
+
+      <input type="text" placeholder="Teléfono"
+        [(ngModel)]="appointment.patientPhone">
+
+      <input type="text" placeholder="Servicio"
+        [(ngModel)]="appointment.service">
+
+      <input type="date"
+        [(ngModel)]="appointment.date">
+
+      <input type="time"
+        [(ngModel)]="appointment.time">
+
+      <input type="text" placeholder="Dirección"
+        [(ngModel)]="appointment.address">
+
+      <textarea placeholder="Notas"
+        [(ngModel)]="appointment.notes"></textarea>
+
+      <div class="actions">
+        <button (click)="submit()">Confirmar</button>
+        <button class="cancel" (click)="closeModal()">Cancelar</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,87 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-container {
+  display: flex;
+  width: 850px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+/* Sidebar */
+.nurse-info {
+  width: 35%;
+  background: linear-gradient(135deg, #0ea5e9, #0369a1);
+  color: white;
+  padding: 20px;
+  text-align: center;
+
+  img {
+    width: 100px;
+    border-radius: 50%;
+    margin-bottom: 10px;
+  }
+
+  .desc {
+    font-size: 0.9rem;
+    margin-top: 10px;
+  }
+}
+
+/* Form */
+.form-section {
+  width: 65%;
+  padding: 25px;
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  input, textarea {
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+
+  textarea {
+    resize: none;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .cancel {
+    background: #ef4444;
+    color: white;
+  }
+
+  button:not(.cancel) {
+    background: #0ea5e9;
+    color: white;
+  }
+}

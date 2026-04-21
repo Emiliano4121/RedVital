@@ -108,12 +108,15 @@
           <h3>Enfermeros cerca de ti</h3>
         </div>
 
-        <!-- 👇 NUEVAS CARDS -->
         <div class="nurses-grid">
           @for (n of nurses; track n.id) {
-            <app-profile-card [nurse]="n"></app-profile-card>
+            <app-profile-card 
+              [nurse]="n"
+              (agendarClick)="openModal($event)">
+            </app-profile-card>
           }
         </div>
+
       }
 
       <!-- ===== ENFERMEROS ===== -->
@@ -125,9 +128,13 @@
 
         <div class="nurses-grid full">
           @for (n of nurses; track n.id) {
-            <app-profile-card [nurse]="n"></app-profile-card>
+            <app-profile-card 
+              [nurse]="n"
+              (agendarClick)="openModal($event)">
+            </app-profile-card>
           }
         </div>
+
       }
 
       <!-- ===== CITAS ===== -->
@@ -184,7 +191,11 @@
           </div>
         </div>
       }
-
+<app-booking-modal
+  [nurse]="selectedNurse"
+  [visible]="showModal"
+  (close)="closeModal()">
+</app-booking-modal>
     </main>
   </div>
 </div>

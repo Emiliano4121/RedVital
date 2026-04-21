@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Nurse } from '../../interfaces/nurse.interface';
 
@@ -13,7 +13,9 @@ export class ProfileCard {
 
   @Input() nurse!: Nurse;
 
+  @Output() agendarClick = new EventEmitter<Nurse>(); // 👈 esto es lo nuevo
+
   agendar() {
-    console.log('Agendar con:', this.nurse);
+    this.agendarClick.emit(this.nurse); // 👈 manda el nurse al padre
   }
 }

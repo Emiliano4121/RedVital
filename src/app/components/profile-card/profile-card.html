@@ -16,6 +16,11 @@
     <h3 class="name">{{ nurse.name }}</h3>
     <p class="specialty">{{ nurse.specialty }}</p>
 
+    <!-- 🆕 Descripción -->
+    <p class="description">
+      {{ nurse.description }}
+    </p>
+
     <div class="rating">
       ⭐ {{ nurse.rating }} ({{ nurse.reviews }})
     </div>
@@ -28,12 +33,12 @@
     <div class="footer">
       <span class="price">${{ nurse.price }}/hr</span>
 
-      <button 
-        class="btn"
-        [disabled]="!nurse.available"
-        (click)="agendar()">
-        {{ nurse.available ? 'Agendar' : 'No disponible' }}
-      </button>
+     <button 
+  class="btn"
+  [disabled]="!nurse.available"
+  (click)="agendar()">
+  {{ nurse.available ? 'Agendar' : 'No disponible' }}
+</button>
     </div>
 
   </div>
