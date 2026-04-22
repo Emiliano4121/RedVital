@@ -4,90 +4,90 @@
   <!-- OVERLAY -->
   <div class="overlay" [class.show]="sidebarOpen()" (click)="toggleSidebar()"></div>
 
-  <!-- ===== SIDEBAR ===== -->
-  <aside class="sidebar" [class.open]="sidebarOpen()">
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar" [class.open]="sidebarOpen()">
 
-    <div class="sb-brand">
-      <div class="brand-logo">
-        <i class="bi bi-heart-pulse-fill"></i>
+      <div class="sb-brand">
+        <div class="brand-logo">
+          <i class="bi bi-heart-pulse-fill"></i>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">RedVital</span>
+          <span class="brand-tag">Tu salud, en casa</span>
+        </div>
       </div>
-      <div class="brand-text">
-        <span class="brand-name">RedVital</span>
-        <span class="brand-tag">Tu salud, en casa</span>
+
+      <div class="sb-user">
+        <div class="avatar-md">
+          {{ auth.user()?.avatar }}
+          <span class="online-dot"></span>
+        </div>
+        <div class="sb-user-info">
+          <p class="sb-name">{{ auth.user()?.name }}</p>
+          <span class="role-chip paciente-chip">
+            <i class="bi bi-shield-check"></i> Paciente
+          </span>
+        </div>
       </div>
-    </div>
 
-    <div class="sb-user">
-      <div class="avatar-md">
-        {{ auth.user()?.avatar }}
-        <span class="online-dot"></span>
+      <nav class="sb-nav">
+        <span class="nav-group-label">Principal</span>
+
+        <button class="sb-item" [class.active]="activeSection()==='inicio'" (click)="setSection('inicio')">
+          <i class="bi bi-house-door-fill"></i>
+          <span>Inicio</span>
+        </button>
+
+        <button class="sb-item" [class.active]="activeSection()==='enfermeros'" (click)="setSection('enfermeros')">
+          <i class="bi bi-people-fill"></i>
+          <span>Enfermeros</span>
+        </button>
+
+        <button class="sb-item" [class.active]="activeSection()==='citas'" (click)="setSection('citas')">
+          <i class="bi bi-calendar-check-fill"></i>
+          <span>Mis citas</span>
+          @if (activeAppointments().length) {
+            <span class="badge badge-soft">{{ activeAppointments().length }}</span>
+          }
+        </button>
+
+        <button class="sb-item" [class.active]="activeSection()==='historial'" (click)="setSection('historial')">
+          <i class="bi bi-clock-history"></i>
+          <span>Historial</span>
+        </button>
+
+        <span class="nav-group-label">Cuenta</span>
+
+        <button class="sb-item" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
+          <i class="bi bi-bell-fill"></i>
+          <span>Notificaciones</span>
+          @if (unreadCount()) {
+            <span class="badge">{{ unreadCount() }}</span>
+          }
+        </button>
+
+        <button class="sb-item" [class.active]="activeSection()==='perfil'" (click)="setSection('perfil')">
+          <i class="bi bi-person-fill"></i>
+          <span>Mi perfil</span>
+        </button>
+
+        <button class="sb-item" [class.active]="activeSection()==='configuracion'" (click)="setSection('configuracion')">
+          <i class="bi bi-gear-fill"></i>
+          <span>Configuración</span>
+        </button>
+      </nav>
+
+      <div class="sb-footer">
+        <button class="demo-btn" (click)="switchToEnfermero()">
+          <i class="bi bi-arrow-left-right"></i>
+          Vista Enfermero
+        </button>
+        <button class="logout-btn" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+          Cerrar sesión
+        </button>
       </div>
-      <div class="sb-user-info">
-        <p class="sb-name">{{ auth.user()?.name }}</p>
-        <span class="role-chip paciente-chip">
-          <i class="bi bi-shield-check"></i> Paciente
-        </span>
-      </div>
-    </div>
-
-    <nav class="sb-nav">
-      <span class="nav-group-label">Principal</span>
-
-      <button class="sb-item" [class.active]="activeSection()==='inicio'" (click)="setSection('inicio')">
-        <i class="bi bi-house-door-fill"></i>
-        <span>Inicio</span>
-      </button>
-
-      <button class="sb-item" [class.active]="activeSection()==='enfermeros'" (click)="setSection('enfermeros')">
-        <i class="bi bi-people-fill"></i>
-        <span>Enfermeros</span>
-      </button>
-
-      <button class="sb-item" [class.active]="activeSection()==='citas'" (click)="setSection('citas')">
-        <i class="bi bi-calendar-check-fill"></i>
-        <span>Mis citas</span>
-        @if (activeAppointments().length) {
-          <span class="badge badge-soft">{{ activeAppointments().length }}</span>
-        }
-      </button>
-
-      <button class="sb-item" [class.active]="activeSection()==='historial'" (click)="setSection('historial')">
-        <i class="bi bi-clock-history"></i>
-        <span>Historial</span>
-      </button>
-
-      <span class="nav-group-label">Cuenta</span>
-
-      <button class="sb-item" [class.active]="activeSection()==='notificaciones'" (click)="setSection('notificaciones')">
-        <i class="bi bi-bell-fill"></i>
-        <span>Notificaciones</span>
-        @if (unreadCount()) {
-          <span class="badge">{{ unreadCount() }}</span>
-        }
-      </button>
-
-      <button class="sb-item" [class.active]="activeSection()==='perfil'" (click)="setSection('perfil')">
-        <i class="bi bi-person-fill"></i>
-        <span>Mi perfil</span>
-      </button>
-
-      <button class="sb-item" [class.active]="activeSection()==='configuracion'" (click)="setSection('configuracion')">
-        <i class="bi bi-gear-fill"></i>
-        <span>Configuración</span>
-      </button>
-    </nav>
-
-    <div class="sb-footer">
-      <button class="demo-btn" (click)="switchToEnfermero()">
-        <i class="bi bi-arrow-left-right"></i>
-        Vista Enfermero
-      </button>
-      <button class="logout-btn" (click)="logout()">
-        <i class="bi bi-box-arrow-right"></i>
-        Cerrar sesión
-      </button>
-    </div>
-  </aside>
+    </aside>
 
   <!-- ===== MAIN ===== -->
   <div class="main">
